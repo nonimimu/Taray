@@ -13,7 +13,7 @@
     <style>
         :root {
             --bg-deep: #050814;
-            --bg-card: rgba(13, 20, 40, 0.8);
+            --bg-card: rgba(13, 20, 40, 0.85);
             --neon-blue: #00f0ff;
             --neon-blue-glow: rgba(0, 240, 255, 0.5);
         }
@@ -29,33 +29,52 @@
             background-attachment: fixed;
         }
 
-        /* Cosmic BG FX */
+        /* --- Background FX --- */
         .stars { position: fixed; inset: 0; pointer-events: none; z-index: -1; background: transparent url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1.5" fill="%23ffffff" opacity="0.8"/><circle cx="150" cy="80" r="1" fill="%23ffffff" opacity="0.6"/><circle cx="80" cy="150" r="2" fill="%2300f0ff" opacity="0.9"/></svg>') repeat; animation: twinkle 10s infinite alternate; }
         .shooting-star { position: fixed; width: 2px; height: 50px; background: linear-gradient(to bottom, transparent, var(--neon-blue), transparent); transform: rotate(-45deg); animation: shoot 5s infinite; opacity: 0; z-index: -1; }
         @keyframes twinkle { 0% { opacity: 0.4; } 100% { opacity: 1; } }
         @keyframes shoot { 0% { transform: translate(100vw, -10vh) rotate(-45deg); opacity: 1; } 20% { transform: translate(20vw, 70vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
 
         /* Lightning FX */
-        @keyframes flash { 0%, 95%, 98%, 100% { opacity: 0; } 96% { opacity: 0.8; filter: brightness(1.5); } 97% { opacity: 0.1; } }
-        .ambient-flash { position: fixed; inset: 0; pointer-events: none; z-index: -1; opacity: 0; animation: flash 8s infinite; background: radial-gradient(circle at top right, rgba(0,240,255,0.1) 0%, transparent 70%); }
+        @keyframes flash { 0%, 95%, 98%, 100% { opacity: 0; } 96% { opacity: 0.6; filter: brightness(1.5); } 97% { opacity: 0.1; } }
+        .ambient-flash { position: fixed; inset: 0; pointer-events: none; z-index: -1; opacity: 0; animation: flash 10s infinite; background: radial-gradient(circle at top right, rgba(0,240,255,0.08) 0%, transparent 70%); }
 
-        /* UI Styling */
-        .glass-card { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
-        .title-glow { background: linear-gradient(to bottom, #ffffff, #80d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px var(--neon-blue-glow)); }
-        .gallery-img { width: 100%; height: auto; max-height: 520px; object-fit: contain; border-radius: 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); }
+        /* --- Underline UI --- */
+        .heading-underline {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            padding-bottom: 14px;
+        }
+        .heading-underline::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), transparent);
+            box-shadow: 0 0 12px var(--neon-blue-glow);
+            border-radius: 99px;
+        }
+
+        /* UI Elements */
+        .glass-card { background: var(--bg-card); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 32px; box-shadow: 0 15px 45px rgba(0,0,0,0.8); }
+        .title-glow { background: linear-gradient(to bottom, #ffffff, #80d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 12px var(--neon-blue-glow)); }
+        .gallery-img { width: 100%; height: auto; max-height: 520px; object-fit: contain; border-radius: 18px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
         
-        .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: var(--bg-deep); z-index: 1000; padding: 30px; transition: 0.4s; border-right: 2px solid var(--neon-blue); }
+        .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: var(--bg-deep); z-index: 1000; padding: 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-right: 2px solid var(--neon-blue); }
         .sidebar.active { left: 0; }
-        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: rgba(13, 20, 40, 0.95); width: 48px; height: 48px; border-radius: 14px; display: flex; justify-content: center; align-items: center; border: 1.5px solid var(--neon-blue); color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue-glow); cursor: pointer; }
+        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: rgba(13, 20, 40, 0.9); width: 48px; height: 48px; border-radius: 14px; display: flex; justify-content: center; align-items: center; border: 1.5px solid var(--neon-blue); color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue-glow); cursor: pointer; }
         
         .delete-btn { position: absolute; top: 12px; right: 12px; background: #ef4444; color: white; width: 32px; height: 32px; border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 50; }
         body.admin-mode-active .delete-btn { display: flex; }
     </style>
 </head>
-<body class="antialiased selection:bg-cyan-500">
+<body class="antialiased">
 
     <div class="stars"></div>
-    <div class="shooting-star" style="top: 10%; left: 70%; animation-delay: 1s;"></div>
+    <div class="shooting-star" style="top: 15%; left: 60%; animation-delay: 2s;"></div>
     <div class="ambient-flash"></div>
 
     <div class="hamburger-btn" onclick="toggleMenu()"><i data-lucide="menu"></i></div>
@@ -66,18 +85,18 @@
         <h2 class="font-bold title-glow text-4xl mb-12 tracking-tighter">TA RAY</h2>
         <div class="flex flex-col gap-5">
             <a href="#profile" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="home" class="text-cyan-400"></i> หน้าหลัก</a>
-            <a href="#queue" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="clipboard-list" class="text-cyan-400"></i> เช็คคิว & ฝากขาย</a>
-            <a href="#rates" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="image" class="text-cyan-400"></i> อัลบั้มเรทราคา</a>
-            <a href="#calculator" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="calculator" class="text-cyan-400"></i> คำนวณยอดเงิน</a>
+            <a href="#queue" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="clipboard-list" class="text-cyan-400"></i> คิวงาน</a>
+            <a href="#rates" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="image" class="text-cyan-400"></i> อัลบั้มเรท</a>
+            <a href="#calculator" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="calculator" class="text-cyan-400"></i> เครื่องคำนวณ</a>
         </div>
     </nav>
 
     <main class="max-w-md mx-auto px-6 py-20 space-y-12 relative z-10">
 
-        <header id="profile" class="text-center space-y-6">
+        <header id="profile" class="text-center space-y-8">
             <div class="relative w-40 h-40 mx-auto">
                 <div class="absolute inset-0 bg-cyan-400/30 rounded-full blur-3xl animate-pulse"></div>
-                <img id="shop-profile-img" src="https://via.placeholder.com/150/050814/00f0ff?text=..." class="w-full h-full object-cover rounded-full border-4 border-cyan-400 shadow-[0_0_20px_rgba(0,240,255,0.4)] relative z-10">
+                <img id="shop-profile-img" src="https://via.placeholder.com/150/050814/00f0ff?text=..." class="w-full h-full object-cover rounded-full border-4 border-cyan-400 shadow-neon-glow relative z-10">
                 <div id="edit-img-overlay" class="absolute inset-0 bg-black/80 text-cyan-400 rounded-full hidden flex-col items-center justify-center text-xs z-20 cursor-pointer font-bold" onclick="document.getElementById('profile-upload').click()">
                     <i data-lucide="image-plus" class="mb-1 w-6 h-6"></i> เปลี่ยนรูป
                 </div>
@@ -93,41 +112,38 @@
         </header>
 
         <section id="queue" class="glass-card p-8 border-l-8 border-cyan-500">
-            <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-3">
+            <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-3 heading-underline">
                 <i data-lucide="database" class="text-cyan-400"></i> ตารางคิว & ฝากขาย
             </h3>
             <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-cyan-600 to-cyan-400 text-white py-5 rounded-2xl font-bold shadow-lg mb-8 active:scale-95 transition-all text-lg">
-                เช็คคิวงานเรียลไทม์ <i data-lucide="external-link" class="w-5 h-5"></i>
+                ตรวจสอบคิวงาน <i data-lucide="external-link" class="w-5 h-5"></i>
             </a>
-            <div class="space-y-4">
-                <p class="font-bold text-cyan-400 flex items-center gap-2 text-sm"><i data-lucide="info" class="w-4 h-4"></i> วิธีการฝากขายทางร้าน Ta Ray:</p>
-                <div id="queue-details" contenteditable="false" class="bg-black/40 p-6 rounded-2xl border border-white/10 text-white text-[15px] leading-loose">
-                    (กำลังโหลดข้อมูล...)
-                </div>
+            <div id="queue-details" contenteditable="false" class="bg-black/40 p-6 rounded-2xl border border-white/10 text-white text-[15px] leading-loose">
+                (กำลังโหลดข้อมูล...)
             </div>
         </section>
 
         <section id="rates" class="glass-card p-8 border-l-8 border-cyan-400">
-            <h3 class="text-2xl font-bold mb-8 text-white flex items-center gap-3">
-                <i data-lucide="images" class="text-cyan-400"></i> อัลบั้มเรทค่าบริการ
+            <h3 class="text-2xl font-bold mb-8 text-white flex items-center gap-3 heading-underline">
+                <i data-lucide="images" class="text-cyan-400"></i> อัลบั้มเรทราคา
             </h3>
             <div id="gallery-rates" class="flex flex-col gap-8"></div>
             <button class="w-full p-5 border-2 border-dashed border-cyan-400/40 rounded-2xl text-sm text-cyan-400 mt-8 hidden admin-mode-btn flex items-center justify-center gap-3 font-bold bg-cyan-400/5" onclick="document.getElementById('gallery-upload').click()">
-                <i data-lucide="plus-square" class="w-5 h-5"></i> เพิ่มรูปเรทใหม่
+                <i data-lucide="plus" class="w-5 h-5"></i> เพิ่มรูปเรทใหม่
             </button>
             <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
         </section>
 
         <div class="text-center space-y-3 py-4">
             <p class="text-cyan-400 font-bold text-sm tracking-[0.2em] uppercase underline decoration-cyan-400/30">Service Selection</p>
-            <p class="text-white text-base font-semibold px-4">ตรวจสอบเรทราคาเรียบร้อยแล้ว <br>สามารถสรุปยอดที่ต้องจ่ายจริงได้ที่ช่องด้านล่าง</p>
+            <p class="text-white text-base font-semibold px-4">เลือกเรทราคาเรียบร้อยแล้ว <br>สามารถสรุปยอดสุทธิได้ที่ช่องด้านล่าง</p>
             <div class="flex justify-center pt-2">
                 <i data-lucide="chevrons-down" class="w-8 h-8 text-cyan-400 animate-bounce"></i>
             </div>
         </div>
 
-        <section id="calculator" class="glass-card p-8 border-t-4 border-cyan-400 shadow-[0_0_25px_rgba(0,240,255,0.1)]">
-            <h3 class="text-2xl font-bold mb-8 text-white flex items-center gap-3">
+        <section id="calculator" class="glass-card p-8 border-t-4 border-cyan-400">
+            <h3 class="text-2xl font-bold mb-8 text-white flex items-center gap-3 heading-underline">
                 <i data-lucide="calculator" class="text-cyan-400"></i> คำนวณยอดเงินสุทธิ
             </h3>
             <div class="space-y-7">
@@ -135,15 +151,15 @@
                     <label class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold ml-1">ประเภทบริการ</label>
                     <select id="calc-type" class="w-full bg-black/60 border-2 border-white/10 rounded-2xl p-5 text-white outline-none focus:border-cyan-400 transition-all" onchange="calculatePrice()">
                         <option value="sell">ฝากขายไอดี (TABAY RATE)</option>
-                        <option value="find">หาไอดีให้ตามงบ (TA RAY RATE)</option>
+                        <option value="find">หาไอดีให้ (TA RAY RATE)</option>
                     </select>
                 </div>
                 <div class="space-y-3">
-                    <label class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold ml-1">ระบุจำนวนเงิน (บาท)</label>
+                    <label class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold ml-1">ระบุจำนวนเงิน</label>
                     <input type="number" id="calc-input" class="w-full bg-black/60 border-2 border-white/10 rounded-2xl p-5 text-white font-bold text-lg outline-none focus:border-cyan-400" placeholder="0" oninput="calculatePrice()">
                 </div>
                 <div class="bg-white/5 rounded-3xl p-7 border border-white/10 space-y-5 shadow-inner">
-                    <div class="flex justify-between items-center text-sm text-slate-300 font-medium">
+                    <div class="flex justify-between items-center text-sm text-slate-300">
                         <span>ค่าบริการ/ธรรมเนียม:</span>
                         <span id="fee-result" class="text-2xl font-bold text-cyan-400">0 ฿</span>
                     </div>
@@ -201,9 +217,9 @@
             cont.innerHTML = '';
             snap.forEach(child => {
                 cont.innerHTML += `
-                    <div class="relative glass-card p-4 border border-white/10 shadow-2xl overflow-hidden group">
+                    <div class="relative glass-card p-4 border border-white/10 shadow-2xl overflow-hidden">
                         <button class="delete-btn" onclick="deleteItem('${child.key}')"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
-                        <img src="${child.val().imgUrl}" class="gallery-img transition-transform group-hover:scale-[1.01]" onclick="window.open(this.src)">
+                        <img src="${child.val().imgUrl}" class="gallery-img" onclick="window.open(this.src)">
                     </div>`;
             });
             lucide.createIcons();
@@ -216,7 +232,7 @@
                 document.getElementById('shop-desc').contentEditable = "true";
                 document.getElementById('queue-details').contentEditable = "true";
                 document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay').forEach(el => el.style.display = 'flex');
-                alert("โหมดแก้ไขเปิดใช้งานแล้วจ้า!");
+                alert("โหมดแอดมินเปิดแล้วจ้า!");
             } else if(pw !== null) alert("รหัสผ่านไม่ถูกต้อง");
         }
 
@@ -229,7 +245,7 @@
             document.getElementById('shop-desc').contentEditable = "false";
             document.getElementById('queue-details').contentEditable = "false";
             document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay, .delete-btn').forEach(el => el.style.display = 'none');
-            alert("บันทึกข้อมูลแล้ว!");
+            alert("บันทึกแล้ว!");
         }
 
         function uploadProfileImg(input) {
@@ -246,17 +262,13 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        function deleteItem(key) { if(confirm("ลบรูปนี้ใช่ไหม?")) db.ref('galleries/rates/'+key).remove(); }
+        function deleteItem(key) { if(confirm("ลบรูปนี้ไหม?")) db.ref('galleries/rates/'+key).remove(); }
 
-        // --- ระบบคำนวณ (Checked & Order Fixed) ---
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
             const input = parseFloat(document.getElementById('calc-input').value) || 0;
             let fee = 0; let total = 0;
-
             if (type === 'sell') {
-                document.getElementById('total-text').innerText = "ยอดสุทธิที่ได้รับ:";
-                // เช็คยอดสูงก่อน (Percentage)
                 if (input >= 100000) fee = input * 0.055;
                 else if (input >= 70000) fee = input * 0.050;
                 else if (input >= 50000) fee = input * 0.047;
@@ -264,7 +276,6 @@
                 else if (input >= 19000) fee = input * 0.035;
                 else if (input >= 14000) fee = input * 0.025;
                 else if (input >= 10000) fee = input * 0.019;
-                // เช็คยอดต่ำ (Flat rates)
                 else if (input >= 8501) fee = 145;
                 else if (input >= 7501) fee = 95;
                 else if (input >= 6000) fee = 80;
@@ -274,26 +285,19 @@
                 else if (input >= 1500) fee = 30;
                 else if (input >= 1000) fee = 25;
                 else if (input >= 500) fee = 15;
-                else fee = 0;
-                
                 total = input - fee;
             } else {
-                document.getElementById('total-text').innerText = "ยอดสุทธิที่ต้องจ่าย:";
-                // เช็คยอดสูงก่อน (Flat rates)
                 if (input >= 100000) fee = 300;
                 else if (input >= 50000) fee = 275;
                 else if (input >= 30000) fee = 250;
                 else if (input >= 15000) fee = 200;
                 else if (input >= 10000) fee = 170;
-                // เช็คยอดต่ำ (Flat rates)
                 else if (input >= 9001) fee = 145;
                 else if (input >= 6001) fee = 120;
                 else if (input >= 3501) fee = 90;
                 else if (input >= 1901) fee = 75;
                 else if (input >= 901) fee = 57;
                 else if (input >= 1) fee = 40;
-                else fee = 0;
-
                 total = input + fee;
             }
             document.getElementById('fee-result').innerText = Math.round(fee).toLocaleString() + " ฿";
