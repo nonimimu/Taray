@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -14,148 +14,115 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { 
-                        ocean: { deep: '#010813', bright: '#0095D9', neon: '#00F2FF', white: '#FFFFFF' } 
-                    },
-                    boxShadow: { 
-                        'neon-glow': '0 0 20px rgba(0, 242, 255, 0.6)',
-                        'white-glow': '0 0 15px rgba(255, 255, 255, 0.3)'
-                    }
+                    colors: { ocean: { deep: '#010813', bright: '#0095D9', neon: '#00F2FF', white: '#FFFFFF' } },
+                    boxShadow: { 'neon-glow': '0 0 20px rgba(0, 242, 255, 0.6)', 'white-glow': '0 0 15px rgba(255, 255, 255, 0.3)' }
                 }
             }
         }
     </script>
 
     <style>
-        /* --- Base & Scroll --- */
-        body {
-            font-family: 'Mitr', sans-serif;
-            background-color: #010813; color: #FFFFFF;
-            margin: 0; overflow-x: hidden;
-        }
+        body { font-family: 'Mitr', sans-serif; background-color: #010813; color: #FFFFFF; margin: 0; overflow-x: hidden; }
         ::-webkit-scrollbar { width: 0px; }
 
-        /* --- Background Effects --- */
-        .bg-storm {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #021127 0%, #010813 100%);
-            z-index: -1; overflow: hidden;
+        /* --- Storm System --- */
+        .storm-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; background: #010813; }
+        
+        /* ฝนตก (สร้างด้วย CSS) */
+        .rain-layer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+        .rain-drop {
+            position: absolute; background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.3));
+            width: 1px; height: 80px; animation: fall linear infinite;
         }
+        @keyframes fall { to { transform: translateY(100vh); } }
 
-        /* ฝนตก */
-        .rain {
-            position: absolute; width: 100%; height: 100%;
-            background-image: url('https://raw.githubusercontent.com/PiyushSuthar/Rain-Effect/master/rain.png');
-            animation: rain 0.3s linear infinite; opacity: 0.2;
-        }
-        @keyframes rain { 0% { background-position: 0 0; } 100% { background-position: 20% 100%; } }
-
-        /* น้ำไหลบนหน้าจอ */
-        .water-streaks {
+        /* น้ำไหลเลอะกระจก (ทำให้ชัดขึ้น) */
+        .glass-water {
             position: fixed; inset: 0; pointer-events: none; z-index: 5;
             background: url('https://www.transparenttextures.com/patterns/glass-window.png');
-            opacity: 0.15;
+            opacity: 0.3; /* เพิ่มความเข้มให้น้ำเกาะกระจก */
         }
 
         /* ฟ้าผ่า */
-        .lightning {
-            position: fixed; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 0;
-        }
-        .lightning-active { animation: flash 0.5s ease-out; }
-        @keyframes flash { 0%, 100% { opacity: 0; } 10%, 30% { opacity: 0.4; } 20% { opacity: 0.1; } }
+        .lightning { position: fixed; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 1; }
+        .lightning-active { animation: flash 0.6s ease-out; }
+        @keyframes flash { 0%, 100% { opacity: 0; } 10%, 40% { opacity: 0.3; } 20% { opacity: 0.1; } }
 
         /* ดาวตก */
-        .star {
-            position: absolute; width: 2px; height: 2px; background: white;
-            border-radius: 50%; opacity: 0; pointer-events: none;
-        }
-        .shooting { animation: shoot 3s linear infinite; }
+        .star { position: absolute; width: 2px; height: 2px; background: #00F2FF; border-radius: 50%; opacity: 0; }
+        .shooting { animation: shoot 2s linear forwards; }
         @keyframes shoot {
             0% { transform: translate(0, 0) rotate(-45deg) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translate(1000px, 1000px) rotate(-45deg) scale(1); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(600px, 600px) rotate(-45deg) scale(1.5); opacity: 0; }
         }
 
-        /* --- UI Elements --- */
-        .text-neon-title {
-            background: linear-gradient(to right, #FFFFFF, #00F2FF, #FFFFFF);
-            -webkit-background-clip: text; color: transparent;
-            background-size: 200% auto; animation: shine 5s linear infinite;
-        }
+        /* --- UI Styling --- */
+        .text-neon-title { background: linear-gradient(to right, #FFFFFF, #00F2FF, #FFFFFF); -webkit-background-clip: text; color: transparent; background-size: 200% auto; animation: shine 5s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
         
-        .glass-card { 
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 242, 255, 0.3); border-radius: 28px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .gallery-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; border-radius: 16px; background: #000; border: 1px solid rgba(255,255,255,0.1); }
-        .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #010813; z-index: 1000; padding: 30px; transition: 0.5s; border-right: 3px solid #00F2FF; }
+        .glass-card { background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(20px); border: 1px solid rgba(0, 242, 255, 0.25); border-radius: 24px; }
+        .gallery-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; border-radius: 12px; background: #000; border: 1px solid rgba(255,255,255,0.05); }
+        .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #010813; z-index: 1000; padding: 30px; transition: 0.4s; border-right: 2px solid #00F2FF; }
         .sidebar.active { left: 0; }
-        
-        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: rgba(1, 8, 19, 0.9); width: 48px; height: 48px; border-radius: 14px; display: flex; justify-content: center; align-items: center; border: 2px solid #00F2FF; color: #00F2FF; box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); cursor: pointer; }
-        
-        .delete-btn { position: absolute; top: 12px; right: 12px; background: #FF4B4B; color: white; width: 32px; height: 32px; border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 50; }
+        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: rgba(1, 8, 19, 0.9); width: 48px; height: 48px; border-radius: 12px; display: flex; justify-content: center; align-items: center; border: 1px solid #00F2FF; color: #00F2FF; box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+        .delete-btn { position: absolute; top: 12px; right: 12px; background: #ef4444; color: white; width: 30px; height: 30px; border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 50; }
         body.admin-mode-active .delete-btn { display: flex; }
-        [contenteditable="true"] { outline: none; border: 2px dashed #00F2FF; padding: 10px; border-radius: 12px; background: rgba(0, 242, 255, 0.05); }
     </style>
 </head>
 <body class="antialiased min-h-screen">
 
-    <div class="bg-storm">
-        <div class="rain"></div>
+    <div class="storm-container" id="storm-bg">
+        <div id="rain-layer" class="rain-layer"></div>
         <div id="stars-container"></div>
     </div>
     <div id="lightning-flash" class="lightning"></div>
-    <div class="water-streaks"></div>
+    <div class="glass-water"></div>
 
-    <div class="hamburger-btn" onclick="toggleMenu()"><i data-lucide="menu"></i></div>
-    <div class="absolute top-4 right-4 opacity-30 cursor-pointer z-50 text-ocean-neon" onclick="unlockAdmin()"><i data-lucide="shield-check"></i></div>
+    <div class="hamburger-btn" onclick="toggleMenu()"><i data-lucide="layout-grid"></i></div>
+    <div class="absolute top-4 right-4 opacity-20 cursor-pointer z-50 text-ocean-neon" onclick="unlockAdmin()"><i data-lucide="shield-check"></i></div>
 
-    <nav id="sidebar" class="sidebar">
-        <div class="text-right mb-10" onclick="toggleMenu()"><i data-lucide="x" class="inline-block text-ocean-neon cursor-pointer w-8 h-8"></i></div>
+    <nav id="sidebar" class="sidebar shadow-2xl">
+        <div class="text-right mb-10" onclick="toggleMenu()"><i data-lucide="chevron-left" class="inline-block text-ocean-neon cursor-pointer"></i></div>
         <h2 class="font-bold text-neon-title text-4xl mb-12 tracking-tighter">TA RAY</h2>
-        <div class="flex flex-col gap-5">
-            <a href="#profile" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-4 hover:border-ocean-neon transition-all" onclick="toggleMenu()"><i data-lucide="home" class="w-5 h-5 text-ocean-neon"></i> หน้าหลัก</a>
-            <a href="#rates" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-4 hover:border-ocean-neon transition-all" onclick="toggleMenu()"><i data-lucide="image" class="w-5 h-5 text-ocean-neon"></i> เรทราคา</a>
-            <a href="#calculator" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-4 hover:border-ocean-neon transition-all" onclick="toggleMenu()"><i data-lucide="calculator" class="w-5 h-5 text-ocean-neon"></i> คำนวณเงิน</a>
-            <a href="#queue" class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-4 hover:border-ocean-neon transition-all" onclick="toggleMenu()"><i data-lucide="clipboard-list" class="w-5 h-5 text-ocean-neon"></i> เช็คคิวงาน</a>
+        <div class="flex flex-col gap-4">
+            <a href="#profile" class="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="user" class="text-ocean-neon"></i> ข้อมูลร้าน</a>
+            <a href="#rates" class="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="image" class="text-ocean-neon"></i> อัลบั้มเรทราคา</a>
+            <a href="#calculator" class="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="calculator" class="text-ocean-neon"></i> คำนวณยอดเงิน</a>
+            <a href="#queue" class="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center gap-3" onclick="toggleMenu()"><i data-lucide="clipboard-list" class="text-ocean-neon"></i> เช็คคิว & ฝากขาย</a>
         </div>
     </nav>
 
     <main class="max-w-md mx-auto px-6 py-20 space-y-12 relative z-10">
 
-        <header id="profile" class="text-center space-y-8">
-            <div class="relative w-40 h-40 mx-auto">
-                <div class="absolute inset-0 bg-ocean-neon/30 rounded-full blur-3xl animate-pulse"></div>
-                <img id="shop-profile-img" src="https://via.placeholder.com/150/010813/00F2FF?text=Ta+Ray" class="w-full h-full object-cover rounded-full border-4 border-ocean-neon shadow-neon-glow relative z-10">
-                <div id="edit-img-overlay" class="absolute inset-0 bg-black/80 text-ocean-neon rounded-full hidden flex-col items-center justify-center text-[11px] z-20 cursor-pointer font-bold" onclick="document.getElementById('profile-upload').click()">
-                    <i data-lucide="camera" class="w-6 h-6 mb-1"></i> เปลี่ยนรูป
+        <header id="profile" class="text-center space-y-6">
+            <div class="relative w-40 h-40 mx-auto group">
+                <div class="absolute inset-0 bg-ocean-neon/20 rounded-full blur-3xl animate-pulse"></div>
+                <img id="shop-profile-img" src="https://via.placeholder.com/150/010813/00F2FF?text=..." class="w-full h-full object-cover rounded-full border-4 border-ocean-neon shadow-neon-glow relative z-10">
+                <div id="edit-img-overlay" class="absolute inset-0 bg-black/80 text-ocean-neon rounded-full hidden flex-col items-center justify-center text-xs z-20 cursor-pointer" onclick="document.getElementById('profile-upload').click()">
+                    <i data-lucide="image-plus" class="mb-1"></i> เปลี่ยนรูป
                 </div>
                 <input type="file" id="profile-upload" class="hidden" accept="image/*" onchange="uploadProfileImg(this)">
             </div>
             <div>
                 <h1 class="font-bold text-neon-title text-6xl uppercase tracking-tighter mb-4">Ta Ray</h1>
-                <div class="glass-card p-6 border-t-2 border-ocean-neon">
-                    <p class="font-bold text-ocean-neon mb-2 text-xl tracking-widest uppercase">Premium Service</p>
-                    <p id="shop-desc" contenteditable="false" class="text-white text-sm leading-relaxed">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
+                <div class="glass-card p-6 border-t-2 border-ocean-neon shadow-neon-glow">
+                    <p class="font-bold text-ocean-neon mb-2 text-xl tracking-tighter">CONSIGNMENT STORE</p>
+                    <p id="shop-desc" contenteditable="false" class="text-white/80 text-sm leading-relaxed">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
                 </div>
             </div>
         </header>
 
         <section id="queue" class="glass-card p-8 border-l-8 border-ocean-bright">
             <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-                <i data-lucide="calendar-days" class="w-6 h-6 text-ocean-neon"></i> ตารางคิว & ฝากขาย
+                <i data-lucide="database" class="text-ocean-neon"></i> ตารางคิว & ฝากขาย
             </h3>
-            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="flex items-center justify-center gap-3 w-full bg-ocean-neon text-ocean-deep py-5 rounded-2xl font-bold shadow-neon-glow mb-8 active:scale-95 transition-all text-lg">
+            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="flex items-center justify-center gap-3 w-full bg-ocean-neon text-ocean-deep py-5 rounded-xl font-bold shadow-neon-glow mb-8 active:scale-95 transition-all text-lg">
                 เช็คคิวงานเรียลไทม์ <i data-lucide="external-link" class="w-5 h-5"></i>
             </a>
             <div class="space-y-4">
-                <p class="font-bold text-ocean-neon text-base flex items-center gap-2">
-                    <i data-lucide="info" class="w-4 h-4"></i> สิ่งที่ต้องจัดเตรียม:
-                </p>
-                <div id="queue-details" contenteditable="false" class="bg-black/40 p-6 rounded-2xl border border-white/20 text-white text-[15px] leading-loose">
+                <p class="font-bold text-ocean-neon flex items-center gap-2">สิ่งที่ต้องจัดเตรียม:</p>
+                <div id="queue-details" contenteditable="false" class="bg-black/30 p-6 rounded-2xl border border-white/10 text-white text-[15px] leading-loose">
                     (กำลังโหลดข้อมูล...)
                 </div>
             </div>
@@ -163,61 +130,61 @@
 
         <section id="rates" class="glass-card p-8 border-l-8 border-ocean-neon">
             <h3 class="text-2xl font-bold mb-8 text-white flex items-center gap-3">
-                <i data-lucide="layout-panel-left" class="w-6 h-6 text-ocean-neon"></i> อัลบั้มเรทค่าบริการ
+                <i data-lucide="layers" class="text-ocean-neon"></i> อัลบั้มเรทค่าบริการ
             </h3>
-            <div id="gallery-rates" class="flex flex-col gap-8"></div>
-            <button class="w-full p-5 border-2 border-dashed border-ocean-neon/40 rounded-2xl text-sm text-ocean-neon mt-8 hidden admin-mode-btn flex items-center justify-center gap-3 font-bold bg-ocean-neon/5" onclick="document.getElementById('gallery-upload').click()">
-                <i data-lucide="plus" class="w-5 h-5"></i> เพิ่มรูปเรทใหม่
+            <div id="gallery-rates" class="flex flex-col gap-6"></div>
+            <button class="w-full p-5 border-2 border-dashed border-ocean-neon/40 rounded-2xl text-xs text-ocean-neon mt-8 hidden admin-mode-btn flex items-center justify-center gap-2 bg-ocean-neon/5" onclick="document.getElementById('gallery-upload').click()">
+                <i data-lucide="plus" class="w-4 h-4"></i> เพิ่มเรทราคาใหม่
             </button>
             <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
         </section>
 
         <div class="text-center space-y-3 py-4">
-            <p class="text-ocean-neon font-bold text-sm tracking-[0.2em] uppercase underline decoration-ocean-neon">Service Selection</p>
-            <p class="text-white text-base font-semibold px-4">ตรวจสอบเรทราคาเรียบร้อยแล้ว <br>สามารถสรุปยอดที่ต้องจ่ายจริงได้ที่ช่องด้านล่าง</p>
-            <div class="flex justify-center pt-2">
-                <i data-lucide="chevrons-down" class="w-8 h-8 text-ocean-neon animate-bounce"></i>
+            <p class="text-ocean-neon font-bold text-xs tracking-widest uppercase">Select Service below</p>
+            <p class="text-white text-base font-medium px-4">เลือกเรทราคาที่ต้องการได้แล้ว <br>สามารถสรุปยอดที่ต้องจ่ายจริงได้ทันทีด้านล่างนี้</p>
+            <div class="flex justify-center pt-2 animate-bounce">
+                <i data-lucide="chevron-down" class="text-ocean-neon"></i>
             </div>
         </div>
 
-        <section id="calculator" class="glass-card p-8 border-t-4 border-ocean-neon shadow-neon-glow">
+        <section id="calculator" class="glass-card p-8 border-t-2 border-ocean-neon shadow-neon-glow">
             <h3 class="text-2xl font-bold mb-8 text-white flex items-center gap-3">
-                <i data-lucide="pocket" class="w-6 h-6 text-ocean-neon"></i> คำนวณยอดสุทธิ
+                <i data-lucide="calculator" class="text-ocean-neon"></i> คำนวณยอดเงินสุทธิ
             </h3>
             <div class="space-y-7">
-                <div class="space-y-3">
+                <div class="space-y-2">
                     <label class="text-[11px] uppercase tracking-widest text-ocean-neon font-bold ml-1">ประเภทบริการ</label>
-                    <select id="calc-type" class="w-full bg-black/60 border-2 border-white/10 rounded-2xl p-5 text-white outline-none focus:border-ocean-neon transition-all" onchange="calculatePrice()">
+                    <select id="calc-type" class="w-full bg-black/60 border border-white/10 rounded-xl p-5 text-white outline-none focus:border-ocean-neon" onchange="calculatePrice()">
                         <option value="sell">ฝากขายไอดี (TABAY RATE)</option>
                         <option value="find">หาไอดีให้ (TA RAY RATE)</option>
                     </select>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-2">
                     <label class="text-[11px] uppercase tracking-widest text-ocean-neon font-bold ml-1">จำนวนเงิน (บาท)</label>
-                    <input type="number" id="calc-input" class="w-full bg-black/60 border-2 border-white/10 rounded-2xl p-5 text-white font-bold text-lg outline-none focus:border-ocean-neon" placeholder="0" oninput="calculatePrice()">
+                    <input type="number" id="calc-input" class="w-full bg-black/60 border border-white/10 rounded-xl p-5 text-white font-bold text-lg outline-none focus:border-ocean-neon" placeholder="0" oninput="calculatePrice()">
                 </div>
                 <div class="bg-white/5 rounded-3xl p-7 border border-white/10 space-y-5 shadow-inner">
                     <div class="flex justify-between items-center text-sm text-slate-300">
-                        <span>ค่าบริการ:</span>
+                        <span>ค่าธรรมเนียมบริการ:</span>
                         <span id="fee-result" class="text-2xl font-bold text-ocean-neon">0 ฿</span>
                     </div>
-                    <div class="flex justify-between items-center border-t border-white/10 pt-5">
-                        <span class="text-sm text-white font-bold uppercase" id="total-text">ยอดสุทธิที่ได้รับ:</span>
-                        <span id="total-result" class="text-4xl font-bold text-white shadow-white-glow">0 ฿</span>
+                    <div class="flex justify-between items-center border-t border-white/10 pt-5 text-sm text-white">
+                        <span class="font-bold" id="total-text">เงินที่คุณได้รับ:</span>
+                        <span id="total-result" class="text-4xl font-bold text-white drop-shadow-lg">0 ฿</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <footer class="flex gap-4 pb-24">
-            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="flex-1 bg-white/5 border border-white/20 py-5 rounded-2xl font-bold text-center flex items-center justify-center gap-3 hover:bg-ocean-bright transition-all"><i data-lucide="facebook"></i> Facebook</a>
-            <a href="#" class="flex-1 bg-white/5 border border-white/20 py-5 rounded-2xl font-bold text-center flex items-center justify-center gap-3 hover:bg-green-600 transition-all"><i data-lucide="message-circle"></i> Line</a>
+        <footer class="flex gap-4 pb-20">
+            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="flex-1 bg-white/5 border border-white/10 py-5 rounded-2xl font-bold text-center flex items-center justify-center gap-2 hover:bg-ocean-bright transition-all"><i data-lucide="facebook"></i> Facebook</a>
+            <a href="#" class="flex-1 bg-white/5 border border-white/10 py-5 rounded-2xl font-bold text-center flex items-center justify-center gap-2 hover:bg-green-600 transition-all"><i data-lucide="message-square"></i> Line</a>
         </footer>
     </main>
 
-    <div id="admin-actions" class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[1001] hidden">
-        <button class="w-full bg-white text-black font-black py-5 rounded-2xl shadow-white-glow flex items-center justify-center gap-3 text-lg" onclick="exitEditMode()">
-            <i data-lucide="save"></i> บันทึกข้อมูลทั้งหมด
+    <div id="admin-actions" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[1001] hidden">
+        <button class="w-full bg-white text-black font-black py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3" onclick="exitEditMode()">
+            <i data-lucide="save"></i> บันทึกข้อมูลทั้งหมด ✅
         </button>
     </div>
 
@@ -240,13 +207,27 @@
 
         lucide.createIcons();
 
-        // --- 2. WEATHER EFFECTS ENGINE ---
-        // ฟ้าผ่า
+        // --- 2. STORM EFFECTS ENGINE ---
+        // ฟังก์ชันสร้างฝน
+        function createRain() {
+            const rainLayer = document.getElementById('rain-layer');
+            for(let i = 0; i < 50; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                rainLayer.appendChild(drop);
+            }
+        }
+        createRain();
+
+        // ฟ้าผ่าแบบสุ่ม
         setInterval(() => {
-            if (Math.random() > 0.95) {
+            if (Math.random() > 0.94) {
                 const flash = document.getElementById('lightning-flash');
                 flash.classList.add('lightning-active');
-                setTimeout(() => flash.classList.remove('lightning-active'), 500);
+                setTimeout(() => flash.classList.remove('lightning-active'), 600);
             }
         }, 3000);
 
@@ -255,14 +236,14 @@
             const container = document.getElementById('stars-container');
             const star = document.createElement('div');
             star.className = 'star shooting';
-            star.style.left = Math.random() * 80 + '%';
-            star.style.top = Math.random() * 40 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 30 + '%';
             container.appendChild(star);
-            setTimeout(() => star.remove(), 3000);
+            setTimeout(() => star.remove(), 2000);
         }
-        setInterval(() => { if (Math.random() > 0.7) createShootingStar(); }, 4000);
+        setInterval(() => { if (Math.random() > 0.6) createShootingStar(); }, 3500);
 
-        // --- 3. CORE FUNCTIONS ---
+        // --- 3. CORE LOGIC ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
 
         db.ref('settings').on('value', snap => {
@@ -279,8 +260,8 @@
             cont.innerHTML = '';
             snap.forEach(child => {
                 cont.innerHTML += `
-                    <div class="relative glass-card p-4 border border-white/10 group">
-                        <button class="delete-btn" onclick="deleteItem('${child.key}')"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                    <div class="relative glass-card p-4 border border-white/5 group shadow-2xl">
+                        <button class="delete-btn" onclick="deleteItem('${child.key}')"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         <img src="${child.val().imgUrl}" class="gallery-img transition-transform group-hover:scale-[1.01]" onclick="window.open(this.src)">
                     </div>`;
             });
@@ -288,14 +269,14 @@
         });
 
         function unlockAdmin() {
-            let pw = prompt("ADMIN PASSCODE:");
+            let pw = prompt("ADMIN ACCESS CODE:");
             if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") {
                 document.body.classList.add("admin-mode-active");
                 document.getElementById('shop-desc').contentEditable = "true";
                 document.getElementById('queue-details').contentEditable = "true";
                 document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay').forEach(el => el.style.display = 'flex');
-                alert("ยินดีต้อนรับครับเอย!");
-            } else if(pw !== null) alert("รหัสผ่านไม่ถูกต้อง!");
+                alert("ACCESS GRANTED");
+            } else if(pw !== null) alert("ACCESS DENIED");
         }
 
         function exitEditMode() {
@@ -307,7 +288,7 @@
             document.getElementById('shop-desc').contentEditable = "false";
             document.getElementById('queue-details').contentEditable = "false";
             document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay, .delete-btn').forEach(el => el.style.display = 'none');
-            alert("บันทึกข้อมูลแล้ว!");
+            alert("SAVED SUCCESSFULLY");
         }
 
         function uploadProfileImg(input) {
@@ -324,15 +305,14 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        function deleteItem(key) { if(confirm("ลบรูปนี้?")) db.ref('galleries/rates/'+key).remove(); }
+        function deleteItem(key) { if(confirm("ลบรูปนี้ใช่ไหม?")) db.ref('galleries/rates/'+key).remove(); }
 
-        // --- 4. CALCULATOR ENGINE ---
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
             const input = parseFloat(document.getElementById('calc-input').value) || 0;
             let fee = 0; let total = 0;
             if (type === 'sell') {
-                document.getElementById('total-text').innerText = "เงินที่จะได้รับ:";
+                document.getElementById('total-text').innerText = "เงินที่คุณจะได้รับ:";
                 if (input < 500) fee = 0;
                 else if (input <= 900) fee = 15; else if (input <= 1499) fee = 25; else if (input <= 1999) fee = 30;
                 else if (input <= 2499) fee = 45; else if (input <= 4499) fee = 57; else if (input <= 5999) fee = 65;
@@ -343,7 +323,7 @@
                 else if (input >= 10000) fee = input * 0.019;
                 total = input - fee;
             } else {
-                document.getElementById('total-text').innerText = "ยอดรวมสุทธิ:";
+                document.getElementById('total-text').innerText = "ยอดสุทธิที่ต้องจ่ายรวม:";
                 if (input <= 900) fee = 40; else if (input <= 1900) fee = 57; else if (input <= 3500) fee = 75;
                 else if (input <= 6000) fee = 90; else if (input <= 9000) fee = 120; else if (input <= 9999) fee = 145;
                 else if (input >= 100000) fee = 300; else if (input >= 50000) fee = 275;
@@ -356,3 +336,4 @@
     </script>
 </body>
 </html>
+    
