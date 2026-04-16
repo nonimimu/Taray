@@ -3,66 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ta Ray - รับฝากขายและหาไอดี</title>
+    <title>Ta Ray - คลังฝากขาย & หาไอดี</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        ocean: {
-                            deep: '#003B5C',
-                            bright: '#0095D9',
-                            dark: '#020617'
-                        }
-                    },
-                    boxShadow: {
-                        'glow-blue': '0 0 20px rgba(0, 149, 217, 0.4)',
-                    }
+                    colors: { ocean: { deep: '#003B5C', bright: '#0095D9', dark: '#020617' } },
+                    boxShadow: { 'glow-blue': '0 0 20px rgba(0, 149, 217, 0.4)' }
                 }
             }
         }
     </script>
 
     <style>
-        html, body { max-width: 100vw; overflow-x: hidden; position: relative; scroll-behavior: smooth; }
         body {
-            font-family: 'Mitr', sans-serif !important;
+            font-family: 'Mitr', sans-serif;
             background-color: #020617; color: #f1f5f9;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 59, 92, 0.3) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 149, 217, 0.15) 0%, transparent 40%);
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 59, 92, 0.3) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(0, 149, 217, 0.15) 0%, transparent 40%);
             background-attachment: fixed;
         }
         .text-gradient {
             background: linear-gradient(to right, #0095D9, #7DD3FC, #0095D9);
-            background-size: 200% auto;
             -webkit-background-clip: text; color: transparent;
             animation: gradientMove 5s linear infinite;
+            background-size: 200% auto;
         }
         @keyframes gradientMove { to { background-position: 200% center; } }
-        
-        .glass-card {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 149, 217, 0.2);
-            border-radius: 28px;
-        }
-        .sidebar {
-            position: fixed; top: 0; left: -100%; width: 270px; height: 100%;
-            background: rgba(2, 6, 23, 0.98); z-index: 1000; padding: 25px; transition: 0.4s;
-            border-right: 1px solid rgba(0, 149, 217, 0.3);
-        }
+        .glass-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(15px); border: 1px solid rgba(0, 149, 217, 0.2); border-radius: 28px; }
+        .sidebar { position: fixed; top: 0; left: -100%; width: 270px; height: 100%; background: rgba(2, 6, 23, 0.98); z-index: 1000; padding: 25px; transition: 0.4s; border-right: 1px solid rgba(0, 149, 217, 0.3); }
         .sidebar.active { left: 0; }
         .sidebar a { display: block; padding: 14px; margin-bottom: 8px; background: rgba(0, 149, 217, 0.1); border-radius: 14px; color: #fff; }
-        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: rgba(0, 59, 92, 0.8); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #0095D9; color: white; }
+        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: rgba(0, 59, 92, 0.8); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #0095D9; color: white; cursor: pointer; }
         .delete-btn { position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; width: 26px; height: 26px; border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 50; }
         body.admin-mode-active .delete-btn { display: flex; }
+        [contenteditable="true"] { outline: none; border-bottom: 1px dashed #0095D9; }
     </style>
 </head>
 <body class="antialiased min-h-screen">
@@ -72,74 +51,46 @@
 
     <nav id="sidebar" class="sidebar">
         <div class="text-right text-3xl cursor-pointer mb-8 text-blue-400" onclick="toggleMenu()">×</div>
-        <h2 class="font-eng text-3xl font-bold text-gradient mb-8">TA RAY</h2>
+        <h2 class="font-bold text-gradient text-3xl mb-8">TA RAY</h2>
         <a href="#profile" onclick="toggleMenu()">🏠 หน้าหลัก</a>
         <a href="#calculator" onclick="toggleMenu()">🧮 เครื่องคำนวณเรท</a>
-        <a href="#queue" onclick="toggleMenu()">📊 เช็คคิว/ฝากขาย</a>
-        <a href="#rates" onclick="toggleMenu()">📑 ดูรูปเรทราคา</a>
+        <a href="#rates" onclick="toggleMenu()">📑 อัลบั้มเรทราคา</a>
     </nav>
 
     <main class="max-w-md mx-auto px-4 py-16 space-y-8 relative z-10">
 
         <header id="profile" class="text-center space-y-5">
-            <div class="relative w-36 h-36 mx-auto">
+            <div class="relative w-36 h-36 mx-auto group">
                 <div class="absolute inset-0 bg-ocean-bright/20 rounded-full blur-2xl animate-pulse"></div>
                 <img id="shop-profile-img" src="https://via.placeholder.com/150/003B5C/0095D9?text=Ta+Ray" class="w-full h-full object-cover rounded-full border-4 border-ocean-bright shadow-glow-blue relative z-10">
-                <div id="edit-img-btn" class="absolute inset-0 bg-black/70 text-white rounded-full hidden items-center justify-center text-xs z-20 cursor-pointer" onclick="changeProfileImg()">เปลี่ยนรูป</div>
+                
+                <div id="edit-img-overlay" class="absolute inset-0 bg-black/70 text-white rounded-full hidden items-center justify-center text-xs z-20 cursor-pointer" onclick="document.getElementById('profile-upload').click()">เปลี่ยนรูป</div>
+                <input type="file" id="profile-upload" class="hidden" accept="image/*" onchange="handleImageUpload(this, 'settings/profileImg')">
             </div>
-            <h1 class="font-eng text-6xl font-bold text-gradient uppercase tracking-tighter">Ta Ray</h1>
+            <h1 class="font-bold text-gradient text-5xl uppercase tracking-tighter">Ta Ray</h1>
             <div class="glass-card p-5 text-sm text-blue-100/80 leading-relaxed">
                 <p class="font-bold text-ocean-bright mb-1 text-lg">ร้าน Ta Ray รับฝากขาย</p>
-                <p>รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดี</p>
+                <p id="shop-desc" contenteditable="false">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดี</p>
             </div>
         </header>
 
         <section id="calculator" class="glass-card p-7 border-t-4 border-ocean-bright">
-            <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-blue-300">
-                <span>🧮</span> ระบบคำนวณค่าบริการ
-            </h3>
-            
-            <div class="space-y-5">
+            <h3 class="text-xl font-semibold mb-6 flex items-center gap-2 text-blue-300">🧮 ระบบคำนวณเรทบริการ</h3>
+            <div class="space-y-5 text-sm">
                 <div>
-                    <label class="text-[11px] uppercase tracking-widest text-blue-400 font-bold ml-1">เลือกบริการ</label>
-                    <select id="calc-type" class="w-full bg-ocean-dark border border-blue-500/30 rounded-2xl p-4 mt-2 text-sm outline-none focus:border-blue-400 transition-all text-white" onchange="calculatePrice()">
+                    <label class="text-blue-400 font-bold text-[11px] uppercase">ประเภทบริการ</label>
+                    <select id="calc-type" class="w-full bg-ocean-dark border border-blue-500/30 rounded-2xl p-4 mt-2 text-white outline-none" onchange="calculatePrice()">
                         <option value="sell">ฝากขายไอดี (อิงเรท TABAY)</option>
                         <option value="find">หาไอดี (อิงเรท Ta Ray)</option>
                     </select>
                 </div>
-                
                 <div>
-                    <label id="input-label" class="text-[11px] uppercase tracking-widest text-blue-400 font-bold ml-1">จำนวนเงิน (บาท)</label>
-                    <input type="number" id="calc-input" class="w-full bg-ocean-dark border border-blue-500/30 rounded-2xl p-4 mt-2 text-sm outline-none focus:border-blue-400 text-white" placeholder="ใส่จำนวนเงินที่นี่..." oninput="calculatePrice()">
+                    <label class="text-blue-400 font-bold text-[11px] uppercase">จำนวนเงิน (บาท)</label>
+                    <input type="number" id="calc-input" class="w-full bg-ocean-dark border border-blue-500/30 rounded-2xl p-4 mt-2 text-white outline-none" placeholder="ใส่จำนวนเงิน..." oninput="calculatePrice()">
                 </div>
-
                 <div class="bg-gradient-to-br from-blue-900/40 to-transparent rounded-3xl p-6 border border-blue-500/20 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-blue-200 uppercase tracking-wide">ค่าบริการ:</span>
-                        <span id="fee-result" class="text-2xl font-bold text-ocean-bright">0 ฿</span>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-blue-500/10 pt-4">
-                        <span class="text-xs text-blue-200 uppercase tracking-wide" id="total-text">เงินที่คุณได้รับ:</span>
-                        <span id="total-result" class="text-2xl font-bold text-green-400">0 ฿</span>
-                    </div>
-                </div>
-                <p class="text-[10px] text-gray-500 text-center italic">"คนที่มีชื่อเสียต้องจ่ายก่อนทุกกรณี"</p>
-            </div>
-        </section>
-
-        <section id="queue" class="glass-card p-7 border-t-4 border-blue-400">
-            <h3 class="text-xl font-semibold mb-5 text-blue-300">📅 เช็คคิว & ข้อมูลการฝาก</h3>
-            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="block w-full bg-gradient-to-r from-ocean-deep to-ocean-bright text-white text-center py-4 rounded-2xl font-bold shadow-lg hover:brightness-110 transition mb-6">คลิกเพื่อตรวจสอบคิวงาน</a>
-            
-            <div class="space-y-4 text-[13px] text-blue-100/80">
-                <p class="font-bold text-blue-300 border-l-4 border-blue-500 pl-3">สิ่งที่ต้องเตรียม:</p>
-                <ul class="space-y-2 list-disc list-inside px-1">
-                    <li>รูปสกิน เครื่องประดับ สัตว์เลี้ยง</li>
-                    <li>รูปของในคลัง ยอดเติม แรงค์</li>
-                    <li>แบบฟอร์มข้อมูลที่ร้านกำหนด</li>
-                </ul>
-                <div class="bg-white/5 p-4 rounded-2xl italic border border-white/5" contenteditable="true">
-                    (พิมพ์รายละเอียดเพิ่มเติมหรือโปรโมชั่นพิเศษทิ้งไว้ได้เลย...)
+                    <div class="flex justify-between items-center"><span>ค่าธรรมเนียม:</span><span id="fee-result" class="text-2xl font-bold text-ocean-bright">0 ฿</span></div>
+                    <div class="flex justify-between items-center border-t border-blue-500/10 pt-4"><span id="total-text">เงินที่จะได้รับ:</span><span id="total-result" class="text-2xl font-bold text-green-400">0 ฿</span></div>
                 </div>
             </div>
         </section>
@@ -147,150 +98,145 @@
         <section id="rates" class="glass-card p-7">
             <h3 class="text-xl font-semibold mb-6 text-blue-300">📑 อัลบั้มเรทราคา</h3>
             <div id="gallery-rates" class="grid grid-cols-2 gap-4"></div>
-            <button class="w-full p-4 border-2 border-dashed border-blue-500/30 rounded-2xl text-xs text-blue-400 mt-4 hidden admin-mode-btn" onclick="addNewItem('gallery-rates', 'lightbox')">+ เพิ่มรูปเรทราคา</button>
+            <button class="w-full p-4 border-2 border-dashed border-blue-500/30 rounded-2xl text-xs text-blue-400 mt-4 hidden admin-mode-btn" onclick="document.getElementById('gallery-upload').click()">+ เพิ่มรูปเรทราคา</button>
+            <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="handleGalleryUpload(this)">
         </section>
 
         <footer class="flex gap-4">
-            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold text-center hover:bg-[#1877F2] transition">Facebook</a>
-            <a href="#" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold text-center hover:bg-[#06C755] transition">Line</a>
+            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold text-center">Facebook</a>
+            <a href="#" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold text-center">Line</a>
         </footer>
-
     </main>
 
     <div id="admin-actions" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[1001] hidden">
-        <button class="w-full bg-blue-500 text-white font-bold p-5 rounded-3xl shadow-2xl" onclick="exitEditMode()">บันทึกและปิดโหมดแก้ไข ✅</button>
+        <button class="w-full bg-blue-600 text-white font-bold p-5 rounded-3xl shadow-2xl" onclick="exitEditMode()">บันทึกข้อมูลทั้งหมด ✅</button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // --- 1. FIREBASE CONFIG ---
         const firebaseConfig = {
-            apiKey: "AIzaSyB5fDf8JtHAWGbUzTBeGAI2K5nmFeN10sI",
-            authDomain: "taray-cf157.firebaseapp.com",
-            databaseURL: "https://taray-cf157-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "taray-cf157",
-            storageBucket: "taray-cf157.firebasestorage.app",
-            messagingSenderId: "302324542631",
-            appId: "1:302324542631:web:22924cafeed9863799bf82"
+            apiKey: "AIzaSyD3G85TUx08gNtnZeJFh8167IJwpHa-Gkw",
+            authDomain: "tabay-f23b5.firebaseapp.com",
+            databaseURL: "https://tabay-f23b5-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "tabay-f23b5",
+            storageBucket: "tabay-f23b5.firebasestorage.app",
+            messagingSenderId: "846273537826",
+            appId: "1:846273537826:web:175184b06beb512824677b"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
 
-        // --- 2. CALCULATOR LOGIC ---
+        // --- 1. โหลดข้อมูลแบบ Real-time (รีเว็บข้อมูลไม่หาย) ---
+        db.ref('settings').on('value', snap => {
+            const data = snap.val();
+            if(data) {
+                if(data.profileImg) document.getElementById('shop-profile-img').src = data.profileImg;
+                if(data.description) document.getElementById('shop-desc').innerText = data.description;
+            }
+        });
+
+        // --- 2. ระบบบันทึกรูปภาพ ---
+        function handleImageUpload(input, dbPath) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const base64 = e.target.result;
+                    // อัปเดตที่หน้าจอ
+                    if(dbPath === 'settings/profileImg') document.getElementById('shop-profile-img').src = base64;
+                    // บันทึกลง Firebase ทันที
+                    db.ref(dbPath).set(base64);
+                    alert("บันทึกรูปภาพเรียบร้อย!");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleGalleryUpload(input) {
+            if (input.files && input.files[0]) {
+                const title = prompt("ระบุชื่อหรือช่วงราคาของรูปนี้ (เช่น เรท 500-900):");
+                const reader = new FileReader();
+                reader.onload = e => {
+                    db.ref('galleries/rates').push({ imgUrl: e.target.result, title: title || "เรทราคา" });
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // --- 3. ADMIN SYSTEM ---
+        function unlockAdmin() {
+            let pw = prompt("กรุณาใส่รหัสผ่านแอดมิน:");
+            if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") { // รหัส Tabay1212
+                document.body.classList.add("admin-mode-active");
+                document.getElementById('shop-desc').contentEditable = "true";
+                document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay').forEach(el => el.style.display = 'flex');
+                alert("ยินดีต้อนรับ! คุณสามารถแก้ไขข้อมูลและเปลี่ยนรูปได้แล้ว");
+            } else if(pw !== null) alert("รหัสผ่านไม่ถูกต้อง!");
+        }
+
+        function exitEditMode() {
+            // บันทึกข้อความ
+            const desc = document.getElementById('shop-desc').innerText;
+            db.ref('settings/description').set(desc);
+
+            document.body.classList.remove("admin-mode-active");
+            document.getElementById('shop-desc').contentEditable = "false";
+            document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay, .delete-btn').forEach(el => el.style.display = 'none');
+            alert("บันทึกข้อมูลและปิดโหมดแก้ไขเรียบร้อย!");
+        }
+
+        // --- 4. CALCULATOR & GALLERY SYNC ---
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
             const input = parseFloat(document.getElementById('calc-input').value) || 0;
-            let fee = 0;
-            let total = 0;
-
+            let fee = 0; let total = 0;
             if (type === 'sell') {
-                document.getElementById('total-text').innerText = "เงินที่คุณได้รับ:";
-                // เรทฝากขาย TABAY
+                document.getElementById('total-text').innerText = "เงินที่จะได้รับ:";
                 if (input >= 500 && input <= 900) fee = 15;
-                else if (input <= 1499) fee = 25;
-                else if (input <= 1999) fee = 30;
-                else if (input <= 2499) fee = 45;
-                else if (input <= 4499) fee = 57;
-                else if (input <= 5999) fee = 65;
-                else if (input <= 7500) fee = 80;
-                else if (input <= 8500) fee = 95;
-                else if (input <= 9999) fee = 145;
-                else if (input >= 100000) fee = input * 0.055;
+                else if (input <= 1499) fee = 25; else if (input <= 1999) fee = 30;
+                else if (input <= 2499) fee = 45; else if (input <= 4499) fee = 57;
+                else if (input <= 5999) fee = 65; else if (input <= 7500) fee = 80;
+                else if (input <= 8500) fee = 95; else if (input <= 9999) fee = 145;
+                else if (input >= 100000) fee = input * 0.055; 
                 else if (input >= 70000) fee = input * 0.05;
                 else if (input >= 50000) fee = input * 0.047;
                 else if (input >= 30000) fee = input * 0.045;
                 else if (input >= 19000) fee = input * 0.035;
                 else if (input >= 14000) fee = input * 0.025;
                 else if (input >= 10000) fee = input * 0.019;
-                else fee = 0;
                 total = input - fee;
             } else {
-                document.getElementById('total-text').innerText = "ยอดรวมที่ต้องจ่าย:";
-                // เรทหาไอดี Ta Ray
-                if (input >= 1 && input <= 900) fee = 40;
-                else if (input <= 1900) fee = 57;
-                else if (input <= 3500) fee = 75;
-                else if (input <= 6000) fee = 90;
-                else if (input <= 9000) fee = 120;
-                else if (input <= 9999) fee = 145;
-                else if (input >= 100000) fee = 300;
-                else if (input >= 50000) fee = 275;
-                else if (input >= 30000) fee = 250;
-                else if (input >= 15000) fee = 200;
-                else if (input >= 10000) fee = 170;
-                else fee = 0;
+                document.getElementById('total-text').innerText = "ยอดจ่ายรวม:";
+                if (input >= 1 && input <= 900) fee = 40; 
+                else if (input <= 1900) fee = 57; else if (input <= 3500) fee = 75;
+                else if (input <= 6000) fee = 90; else if (input <= 9000) fee = 120;
+                else if (input <= 9999) fee = 145; else if (input >= 100000) fee = 300;
+                else if (input >= 50000) fee = 275; else if (input >= 30000) fee = 250;
+                else if (input >= 15000) fee = 200; else if (input >= 10000) fee = 170;
                 total = input + fee;
             }
-
             document.getElementById('fee-result').innerText = Math.round(fee).toLocaleString() + " ฿";
             document.getElementById('total-result').innerText = Math.round(total).toLocaleString() + " ฿";
         }
 
-        // --- 3. ADMIN SYSTEM ---
-        function unlockAdmin() {
-            let pw = prompt("รหัสผ่านแอดมิน:");
-            // รหัส: Tabay1212
-            if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") {
-                document.body.classList.add("admin-mode-active");
-                document.body.contentEditable = "true";
-                document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-btn').forEach(el => el.style.display = 'block');
-                document.querySelectorAll('a, input, select, button').forEach(el => el.contentEditable = "false");
-                alert("โหมดแก้ไขเปิดใช้งานแล้ว!");
-            } else if(pw !== null) { alert("รหัสผ่านไม่ถูกต้อง!"); }
-        }
-
-        function exitEditMode() {
-            document.body.classList.remove("admin-mode-active");
-            document.body.contentEditable = "false";
-            document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-btn, .delete-btn').forEach(el => el.style.display = 'none');
-            alert("บันทึกข้อมูลเรียบร้อย!");
-        }
-
-        // --- 4. GALLERY SYNC ---
-        db.ref('galleries/gallery-rates').on('value', snap => {
+        db.ref('galleries/rates').on('value', snap => {
             const cont = document.getElementById('gallery-rates');
             cont.innerHTML = '';
             snap.forEach(child => {
                 const d = child.val();
                 cont.innerHTML += `
                     <div class="relative bg-white/5 p-2 rounded-2xl border border-white/10">
-                        <button class="delete-btn" onclick="deleteItem('gallery-rates', '${child.key}')">✕</button>
+                        <button class="delete-btn" onclick="deleteItem('${child.key}')">✕</button>
                         <img src="${d.imgUrl}" class="w-full aspect-[3/4] object-cover rounded-xl" onclick="window.open(this.src)">
                         <p class="text-[10px] text-center mt-2 opacity-50">${d.title}</p>
-                    </div>
-                `;
+                    </div>`;
             });
         });
 
-        function addNewItem(id, type) {
-            let title = prompt("ชื่อเรียกรูปภาพ:");
-            let input = document.createElement('input');
-            input.type = 'file'; input.accept = 'image/*';
-            input.onchange = e => {
-                const reader = new FileReader();
-                reader.readAsDataURL(e.target.files[0]);
-                reader.onload = ev => {
-                    db.ref('galleries/' + id).push({ imgUrl: ev.target.result, title: title, type: type });
-                };
-            };
-            input.click();
-        }
-
-        function deleteItem(id, key) { if(confirm("ลบรูปนี้ใช่ไหม?")) db.ref('galleries/'+id+'/'+key).remove(); }
-        function changeProfileImg() {
-            let input = document.createElement('input');
-            input.type = 'file'; input.accept = 'image/*';
-            input.onchange = e => {
-                const reader = new FileReader();
-                reader.readAsDataURL(e.target.files[0]);
-                reader.onload = ev => document.getElementById('shop-profile-img').src = ev.target.result;
-            };
-            input.click();
-        }
+        function deleteItem(key) { if(confirm("ลบรูปนี้ใช่ไหม?")) db.ref('galleries/rates/'+key).remove(); }
     </script>
 </body>
 </html>
