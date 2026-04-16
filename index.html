@@ -101,7 +101,7 @@
 
         <div class="text-center px-4 space-y-2">
             <p class="text-blue-300 font-medium italic text-sm">" เช็คเรทราคาที่โดนใจแล้ว.. "</p>
-            <p class="text-white text-base font-semibold">เอยพร้อมช่วยคำนวณยอดเงินที่ต้องจ่ายจริง <br> ให้คุณได้ทันทีที่ช่องถัดไปเลยครับ ✨</p>
+            <p class="text-white text-base font-semibold">สามารถเลือกคำนวณยอดเงินที่ต้องจ่ายจริง <br> ได้ทันทีที่ช่องถัดไปเลยครับ ✨</p>
             <div class="flex justify-center mt-2 animate-bounce">
                 <span class="text-blue-400 text-2xl">↓</span>
             </div>
@@ -111,7 +111,7 @@
             <h3 class="text-2xl font-bold mb-8 flex items-center gap-3 text-blue-300">🧮 เครื่องคำนวณเรท</h3>
             <div class="space-y-6">
                 <div>
-                    <label class="text-blue-400 font-bold text-xs uppercase ml-1">เลือกประเภทบริการที่คุณต้องการ</label>
+                    <label class="text-blue-400 font-bold text-xs uppercase ml-1">เลือกประเภทบริการ</label>
                     <select id="calc-type" class="w-full bg-ocean-dark/50 border border-blue-500/40 rounded-2xl p-4 mt-2 text-white outline-none" onchange="calculatePrice()">
                         <option value="sell">ฝากขายไอดี (อิงเรท TABAY)</option>
                         <option value="find">หาไอดีให้ตามงบ (อิงเรท Ta Ray)</option>
@@ -123,7 +123,7 @@
                 </div>
                 <div class="bg-gradient-to-br from-blue-900/50 to-blue-800/10 rounded-3xl p-6 border border-blue-500/20 space-y-4 shadow-inner">
                     <div class="flex justify-between items-center text-sm"><span class="opacity-70">ค่าบริการ/ค่าธรรมเนียม:</span><span id="fee-result" class="text-2xl font-bold text-ocean-bright">0 ฿</span></div>
-                    <div class="flex justify-between items-center border-t border-white/5 pt-4"><span class="opacity-70 font-bold" id="total-text">เงินที่คุณจะได้รับ:</span><span id="total-result" class="text-3xl font-bold text-green-400">0 ฿</span></div>
+                    <div class="flex justify-between items-center border-t border-white/5 pt-4"><span class="opacity-70 font-bold" id="total-text">ยอดสุทธิ:</span><span id="total-result" class="text-3xl font-bold text-green-400">0 ฿</span></div>
                 </div>
             </div>
         </section>
@@ -179,14 +179,14 @@
         });
 
         function unlockAdmin() {
-            let pw = prompt("รหัสแอดมิน:");
+            let pw = prompt("กรุณาใส่รหัสผ่านแอดมิน:");
             if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") {
                 document.body.classList.add("admin-mode-active");
                 document.getElementById('shop-desc').contentEditable = "true";
                 document.getElementById('queue-details').contentEditable = "true";
                 document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay').forEach(el => el.style.display = 'flex');
-                alert("โหมดแก้ไขเปิดแล้วจ้า!");
-            } else if(pw !== null) alert("รหัสผิดน้า!");
+                alert("โหมดแก้ไขเปิดใช้งานแล้ว!");
+            } else if(pw !== null) alert("รหัสผ่านไม่ถูกต้อง!");
         }
 
         function exitEditMode() {
@@ -197,7 +197,7 @@
             document.getElementById('shop-desc').contentEditable = "false";
             document.getElementById('queue-details').contentEditable = "false";
             document.querySelectorAll('.admin-mode-btn, #admin-actions, #edit-img-overlay, .delete-btn').forEach(el => el.style.display = 'none');
-            alert("เซฟเรียบร้อย!");
+            alert("บันทึกข้อมูลเรียบร้อย!");
         }
 
         function uploadProfileImg(input) {
@@ -214,7 +214,7 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        function deleteItem(key) { if(confirm("ลบรูปนี้ใช่ไหม?")) db.ref('galleries/rates/'+key).remove(); }
+        function deleteItem(key) { if(confirm("ยืนยันการลบรูปภาพนี้?")) db.ref('galleries/rates/'+key).remove(); }
 
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
@@ -232,7 +232,7 @@
                 else if (input >= 10000) fee = input * 0.019;
                 total = input - fee;
             } else {
-                document.getElementById('total-text').innerText = "ยอดจ่ายรวมสุทธิ:";
+                document.getElementById('total-text').innerText = "ยอดรวมสุทธิ:";
                 if (input <= 900) fee = 40; else if (input <= 1900) fee = 57; else if (input <= 3500) fee = 75;
                 else if (input <= 6000) fee = 90; else if (input <= 9000) fee = 120; else if (input <= 9999) fee = 145;
                 else if (input >= 100000) fee = 300; else if (input >= 50000) fee = 275;
