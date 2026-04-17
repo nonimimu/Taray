@@ -6,181 +6,187 @@
     <title>TA RAY STORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3G85TUx08gNtnZeJFh8167IJwpHa-Gkw",
+            authDomain: "tabay-f23b5.firebaseapp.com",
+            databaseURL: "https://tabay-f23b5-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "tabay-f23b5",
+            storageBucket: "tabay-f23b5.firebasestorage.app",
+            messagingSenderId: "846273537826",
+            appId: "1:846273537826:web:175184b06beb512824677b"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        window.db = db; window.dbRef = ref; window.dbSet = set; window.dbOnValue = onValue;
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        starry: { deep: '#0C1446', indigo: '#2B5C92', soft: '#B3CDE0' },
+                        ocean: { dark: '#003B5C', bright: '#0095D9' },
+                        accent: { miku: '#00f0ff' }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body {
             font-family: 'Mitr', sans-serif !important;
-            background-color: #0a0000; /* ดำ-แดงสไตล์พิงจู */
+            background-color: #0C1446;
             color: #ffffff;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(128, 0, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 26, 26, 0.1) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 10% 20%, #2B5C92 0%, transparent 40%), radial-gradient(circle at 90% 80%, #003B5C 0%, transparent 40%);
             background-attachment: fixed;
         }
-        .eng-heading { font-family: 'Playfair Display', serif !important; }
-        .glass-card { 
-            background: rgba(20, 0, 0, 0.7); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255, 26, 26, 0.15); 
-        }
-        .text-gradient {
-            background: linear-gradient(to right, #ff1a1a, #ff7300, #ff1a1a);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        /* ขีดใต้นีออนฉบับปรับปรุง: บางลง ห่างขึ้น และนวลขึ้น */
-        .heading-underline {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            padding-bottom: 12px;
-        }
-        .heading-underline::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 45%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff1a1a, transparent);
-            box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
-            border-radius: 99px;
-        }
-        .edit-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: 0.3s;
-            cursor: pointer;
-            border-radius: inherit;
-        }
-        .group:hover .edit-overlay { opacity: 1; }
-        input[type="file"] { display: none; }
+        .glass-card { background: rgba(12, 20, 70, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(179, 205, 224, 0.1); }
+        .heading-underline { position: relative; display: inline-flex; padding-bottom: 12px; }
+        .heading-underline::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 45%; height: 2px; background: linear-gradient(90deg, transparent, #00f0ff, transparent); box-shadow: 0 0 15px #00f0ff; border-radius: 99px; }
+        .admin-controls { display: none; }
+        body.is-admin .admin-controls { display: block; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; }
     </style>
 </head>
-<body class="antialiased min-h-screen pb-20">
+<body class="antialiased min-h-screen pb-20" id="main-body">
 
     <main class="max-w-3xl mx-auto px-4 py-10 flex flex-col gap-8">
         
         <header class="text-center space-y-4 flex flex-col items-center">
             <div class="relative w-32 h-32 md:w-40 md:h-40 group">
-                <label for="upload-logo">
-                    <img id="display-logo" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" class="w-full h-full object-cover rounded-full border-2 border-[#ff1a1a] shadow-lg relative z-10">
-                    <div class="edit-overlay z-20 rounded-full">
-                        <span class="text-xs bg-white text-black px-2 py-1 rounded">เปลี่ยนโลโก้</span>
-                    </div>
-                </label>
-                <input type="file" id="upload-logo" accept="image/*" onchange="previewImage(event, 'display-logo')">
+                <img id="display-logo" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" class="w-full h-full object-cover rounded-full border-2 border-accent-miku shadow-lg z-10">
+                <div class="admin-controls absolute inset-0 flex items-center justify-center bg-black/60 rounded-full cursor-pointer" onclick="document.getElementById('upload-logo').click()">
+                    <span class="text-[10px] font-bold">เปลี่ยนโลโก้</span>
+                </div>
+                <input type="file" id="upload-logo" class="hidden" accept="image/*" onchange="uploadToFirebase(this, 'logoUrl')">
             </div>
-            <h1 class="eng-heading text-6xl md:text-7xl font-bold text-gradient tracking-wider drop-shadow-lg">
+            <h1 class="eng-heading text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-accent-miku to-ocean-bright uppercase tracking-tighter">
                 TA RAY STORE
             </h1>
-            <div class="glass-card p-5 rounded-2xl max-w-lg border-[#ff1a1a]/30">
-                <p class="text-[#ff1a1a] font-medium mb-1">ร้าน Ta Ray รับฝากขาย</p>
-                <p class="text-sm text-white/80 leading-relaxed">
-                    รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดี
-                </p>
-            </div>
+            <p class="text-starry-soft/80 text-sm max-w-md mx-auto">ร้าน Ta Ray รับฝากขาย ทำป้ายต่างๆ และรับหาไอดี</p>
         </header>
 
         <section class="flex flex-col gap-6">
-            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" 
-               class="glass-card p-6 rounded-3xl border-l-4 border-l-[#ff1a1a] flex justify-between items-center group hover:bg-[#ff1a1a]/10 transition-all">
-                <div>
-                    <h3 class="text-xl font-bold text-[#ff1a1a]">เช็คคิวงาน (Queue)</h3>
-                    <p class="text-xs text-white/50">คลิกเพื่อดูสถานะคิวงานใน Google Sheets</p>
-                </div>
-                <svg class="w-6 h-6 text-[#ff1a1a] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="glass-card p-6 rounded-2xl border-l-4 border-ocean-bright flex justify-between items-center group">
+                <span class="font-bold text-ocean-bright text-lg">เช็คคิวงาน (Google Sheets)</span>
+                <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
             </a>
 
-            <div class="glass-card p-8 rounded-[2.5rem]">
-                <h3 class="text-xl font-bold mb-4 text-[#ff7300] heading-underline">วิธีการฝากขาย</h3>
-                <div class="space-y-4 text-sm text-white/90">
-                    <p class="font-medium text-[#ff1a1a]">ต้องเตรียมรูปดังนี้:</p>
-                    <ul class="grid grid-cols-2 gap-3">
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1a1a] rounded-full"></span> สกิน</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1a1a] rounded-full"></span> เครื่องประดับ</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1a1a] rounded-full"></span> สัตว์เลี้ยง</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1a1a] rounded-full"></span> ของในคลัง</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1a1a] rounded-full"></span> ยอดเติม</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1a1a] rounded-full"></span> แรงค์</li>
-                    </ul>
-                    <p class="pt-2 text-white/60 italic">* และจะมีแบบฟอร์มให้กรอกที่หน้าร้าน</p>
+            <div class="glass-card p-8 rounded-3xl">
+                <h3 class="text-xl font-bold mb-4 text-accent-miku heading-underline">รายละเอียดการฝากขาย</h3>
+                <div id="display-conditions" class="text-sm text-starry-soft leading-relaxed whitespace-pre-wrap italic">กำลังโหลด...</div>
+                <div class="admin-controls mt-4">
+                    <textarea id="edit-conditions" class="w-full bg-black/40 border border-white/20 rounded-xl p-4 text-sm mb-2 outline-none focus:border-accent-miku"></textarea>
+                    <button onclick="saveText('conditions', 'edit-conditions')" class="bg-accent-miku text-black px-4 py-2 rounded-lg text-xs font-bold">บันทึกเงื่อนไข</button>
                 </div>
             </div>
         </section>
 
-        <section class="flex flex-col gap-6">
-            <div class="glass-card p-2 rounded-[2.5rem] overflow-hidden relative group">
-                <label for="upload-rate">
-                    <img id="display-rate-img" src="https://i.postimg.cc/mD4mF9L8/rate.jpg" class="w-full rounded-[2.2rem] shadow-2xl">
-                    <div class="edit-overlay">
-                        <span class="bg-white text-black px-4 py-2 rounded-xl font-bold text-sm">เปลี่ยนรูปเรทราคาจากคลังมือถือ</span>
+        <section class="flex flex-col gap-4">
+            <h3 class="text-center font-bold text-accent-miku uppercase tracking-widest">Rate Cards</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="relative glass-card p-2 rounded-2xl group overflow-hidden">
+                    <img id="display-rate1" src="https://via.placeholder.com/400x600/000?text=Rate+Selling" class="w-full rounded-xl">
+                    <div class="admin-controls absolute inset-0 flex items-center justify-center bg-black/60 cursor-pointer" onclick="document.getElementById('upload-rate1').click()">
+                        <span class="text-xs font-bold">เปลี่ยนรูปเรทฝากขาย</span>
                     </div>
-                </label>
-                <input type="file" id="upload-rate" accept="image/*" onchange="previewImage(event, 'display-rate-img')">
+                    <input type="file" id="upload-rate1" class="hidden" onchange="uploadToFirebase(this, 'rateImg1')">
+                </div>
+                <div class="relative glass-card p-2 rounded-2xl group overflow-hidden">
+                    <img id="display-rate2" src="https://via.placeholder.com/400x600/000?text=Rate+Finding" class="w-full rounded-xl">
+                    <div class="admin-controls absolute inset-0 flex items-center justify-center bg-black/60 cursor-pointer" onclick="document.getElementById('upload-rate2').click()">
+                        <span class="text-xs font-bold">เปลี่ยนรูปเรทฝากหา</span>
+                    </div>
+                    <input type="file" id="upload-rate2" class="hidden" onchange="uploadToFirebase(this, 'rateImg2')">
+                </div>
             </div>
+        </section>
 
-            <div class="glass-card p-8 rounded-[3rem] border-t-2 border-t-[#ff1a1a] shadow-lg">
-                <h3 class="text-2xl text-center text-white mb-8 heading-underline font-black uppercase tracking-widest">Calculator</h3>
-                
-                <div class="flex gap-3 mb-8">
-                    <button onclick="setCalcMode('sell')" id="btn-sell" class="flex-1 py-4 rounded-2xl border-2 border-[#ff1a1a] bg-[#ff1a1a]/20 text-white font-bold transition-all">ฝากขาย</button>
-                    <button onclick="setCalcMode('find')" id="btn-find" class="flex-1 py-4 rounded-2xl border-2 border-white/5 text-white/40 font-bold">ฝากหา</button>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="relative">
-                        <label id="input-label" class="block text-[10px] text-[#ff7300] uppercase font-bold mb-2 ml-1">ระบุราคารหัส (บาท)</label>
-                        <input type="number" id="price-input" placeholder="0.00" class="w-full bg-black/40 border-2 border-white/5 rounded-2xl px-6 py-5 text-3xl text-[#ff1a1a] font-black outline-none focus:border-[#ff1a1a]">
-                    </div>
-                    <button onclick="calculate()" class="w-full py-5 bg-gradient-to-r from-[#800000] to-[#ff1a1a] rounded-2xl font-black text-xl text-white shadow-xl uppercase">Calculate Now</button>
-                    
-                    <div id="result-box" class="hidden mt-6 p-8 bg-white/5 rounded-[2rem] text-center border border-white/10">
-                        <p id="fee-display" class="text-xs text-white/50 uppercase tracking-widest"></p>
-                        <p id="result-text" class="text-5xl font-black text-[#ff7300] mt-3"></p>
-                        <p id="label-final" class="text-[10px] text-[#ff1a1a] font-bold uppercase mt-2"></p>
-                    </div>
-                </div>
+        <section class="glass-card p-8 rounded-[2.5rem] border-t-2 border-t-accent-miku">
+            <h3 class="text-2xl text-center text-white mb-8 heading-underline font-black uppercase">Calculator</h3>
+            <div class="flex gap-2 mb-6 text-sm font-bold">
+                <button onclick="setCalcMode('sell')" id="btn-sell" class="flex-1 py-4 rounded-xl border-2 border-accent-miku bg-accent-miku/20">ฝากขาย</button>
+                <button onclick="setCalcMode('find')" id="btn-find" class="flex-1 py-4 rounded-xl border-2 border-white/5 text-starry-soft">ฝากหา</button>
+            </div>
+            <input type="number" id="price-input" placeholder="ใส่จำนวนเงิน..." class="w-full bg-black/40 border-2 border-white/5 rounded-xl px-6 py-5 text-3xl text-accent-miku font-black outline-none focus:border-accent-miku mb-4">
+            <button onclick="calculate()" class="w-full py-5 bg-gradient-to-r from-ocean-dark to-ocean-bright rounded-xl font-black text-white shadow-xl">คำนวณเงิน</button>
+            <div id="result-box" class="hidden mt-4 p-6 bg-white/5 rounded-xl text-center border border-white/10">
+                <p id="fee-display" class="text-xs text-starry-soft uppercase tracking-widest"></p>
+                <p id="result-text" class="text-5xl font-black text-accent-miku mt-2"></p>
+                <p id="label-final" class="text-[10px] font-bold uppercase mt-2"></p>
             </div>
         </section>
 
         <footer class="text-center space-y-6 pt-4">
-            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="inline-flex items-center gap-2 px-12 py-4 bg-white text-black rounded-full font-black text-sm hover:scale-105 transition-all shadow-xl uppercase">
-                Contact Fanpage
-            </a>
-            <p class="text-[9px] text-white/20 tracking-[0.5em] uppercase">© 2026 TA RAY STORE</p>
+            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="px-10 py-3 bg-white text-black rounded-full font-black text-xs hover:scale-105 transition-all shadow-xl uppercase">Facebook Fanpage</a>
+            <p class="text-[9px] text-starry-soft/30 tracking-[0.5em] uppercase">© 2026 TA RAY STORE</p>
         </footer>
 
+        <button onclick="adminLogin()" class="fixed bottom-6 right-6 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 opacity-30 hover:opacity-100 transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </button>
     </main>
 
     <script>
-        // ฟังก์ชันเปลี่ยนรูปทันทีจากคลังมือถือ
-        function previewImage(event, targetId) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                document.getElementById(targetId).src = reader.result;
-            };
-            if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
+        // --- Admin System ---
+        function adminLogin() {
+            const pass = prompt("ใส่รหัสแอดมิน:");
+            if (pass === "taray12121") {
+                document.getElementById('main-body').classList.add('is-admin');
+                alert("โหมดแอดมินเปิดใช้งานแล้ว");
+            } else { alert("รหัสผิด!"); }
         }
 
+        // --- Firebase Core ---
+        function loadData() {
+            if(!window.dbOnValue) return setTimeout(loadData, 500);
+            window.dbOnValue(window.dbRef(window.db, 'siteData'), (snapshot) => {
+                const d = snapshot.val() || {};
+                if(d.logoUrl) document.getElementById('display-logo').src = d.logoUrl;
+                if(d.rateImg1) document.getElementById('display-rate1').src = d.rateImg1;
+                if(d.rateImg2) document.getElementById('display-rate2').src = d.rateImg2;
+                if(d.conditions) {
+                    document.getElementById('display-conditions').innerText = d.conditions;
+                    document.getElementById('edit-conditions').value = d.conditions;
+                }
+            });
+        }
+
+        async function uploadToFirebase(input, field) {
+            const file = input.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64 = e.target.result;
+                await window.dbSet(window.dbRef(window.db, 'siteData/' + field), base64);
+                alert("อัปเดตรูปภาพเรียบร้อย!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveText(field, inputId) {
+            const val = document.getElementById(inputId).value;
+            window.dbSet(window.dbRef(window.db, 'siteData/' + field), val).then(() => alert("บันทึกเรียบร้อย"));
+        }
+
+        // --- Calculator ---
         let mode = 'sell';
         function setCalcMode(m) {
             mode = m;
-            document.getElementById('btn-sell').className = m === 'sell' ? "flex-1 py-4 rounded-2xl border-2 border-[#ff1a1a] bg-[#ff1a1a]/20 text-white font-bold" : "flex-1 py-4 rounded-2xl border-2 border-white/5 text-white/40 font-bold";
-            document.getElementById('btn-find').className = m === 'find' ? "flex-1 py-4 rounded-2xl border-2 border-[#ff1a1a] bg-[#ff1a1a]/20 text-white font-bold" : "flex-1 py-4 rounded-2xl border-2 border-white/5 text-white/40 font-bold";
-            document.getElementById('input-label').innerText = m === 'sell' ? "ระบุราคารหัส (บาท)" : "ระบุงบที่มี (บาท)";
+            document.getElementById('btn-sell').className = m === 'sell' ? "flex-1 py-4 rounded-xl border-2 border-accent-miku bg-accent-miku/20" : "flex-1 py-4 rounded-xl border-2 border-white/5 text-starry-soft";
+            document.getElementById('btn-find').className = m === 'find' ? "flex-1 py-4 rounded-xl border-2 border-accent-miku bg-accent-miku/20 text-white font-bold" : "flex-1 py-4 rounded-xl border-2 border-white/5 text-starry-soft";
             document.getElementById('result-box').classList.add('hidden');
         }
 
         function calculate() {
             const p = parseFloat(document.getElementById('price-input').value);
-            if(!p || p <= 0) return alert("กรุณาใส่จำนวนเงิน");
+            if(!p || p <= 0) return alert("ใส่ตัวเลขด้วยนะเอย");
             let fee = 0;
             if(mode === 'sell') {
                 if (p <= 900) fee = 15; else if (p <= 1499) fee = 25; else if (p <= 1999) fee = 30; else if (p <= 2499) fee = 45;
@@ -188,19 +194,20 @@
                 else if (p <= 9999) fee = 145; else if (p <= 13999) fee = p * 0.019; else if (p <= 18999) fee = p * 0.025;
                 else if (p <= 29999) fee = p * 0.035; else if (p <= 49999) fee = p * 0.045; else if (p <= 69999) fee = p * 0.047;
                 else if (p <= 99999) fee = p * 0.050; else fee = p * 0.055;
-                document.getElementById('fee-display').innerText = "Service Fee: -" + Math.floor(fee).toLocaleString() + " THB";
+                document.getElementById('fee-display').innerText = "หักค่าบริการ: -" + Math.floor(fee).toLocaleString() + " บาท";
                 document.getElementById('result-text').innerText = Math.floor(p - fee).toLocaleString();
-                document.getElementById('label-final').innerText = "เงินที่คุณจะได้รับสุทธิ";
+                document.getElementById('label-final').innerText = "เงินที่แอดมินจะโอนให้คุณ";
             } else {
                 if (p <= 900) fee = 40; else if (p <= 1900) fee = 57; else if (p <= 3500) fee = 75; else if (p <= 6000) fee = 90;
                 else if (p <= 9000) fee = 120; else if (p <= 9999) fee = 145; else if (p <= 14999) fee = 170; else if (p <= 29999) fee = 200;
                 else if (p <= 49999) fee = 250; else if (p <= 99999) fee = 275; else fee = 300;
-                document.getElementById('fee-display').innerText = "Finding Fee: +" + fee.toLocaleString() + " THB";
+                document.getElementById('fee-display').innerText = "บวกค่าฝากหา: +" + fee.toLocaleString() + " บาท";
                 document.getElementById('result-text').innerText = (p + fee).toLocaleString();
-                document.getElementById('label-final').innerText = "ยอดรวมที่ต้องชำระ";
+                document.getElementById('label-final').innerText = "ยอดที่ลูกค้าต้องโอน";
             }
             document.getElementById('result-box').classList.remove('hidden');
         }
+        window.onload = loadData;
     </script>
 </body>
 </html>
