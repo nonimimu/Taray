@@ -7,188 +7,139 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         dark: { bg: '#020617', card: '#0f172a', border: '#1e293b' },
-                        accent: { primary: '#38bdf8', darkred: '#0284c7', orange: '#818cf8', white: '#ffffff' }
+                        accent: { primary: '#38bdf8', orange: '#818cf8', white: '#ffffff' }
                     },
-                    boxShadow: {
-                        'glow-primary': '0 0 15px rgba(56, 189, 248, 0.4)',
-                        'glow-orange': '0 0 15px rgba(129, 140, 248, 0.3)',
-                    },
-                    animation: {
-                        'float-slow': 'float 6s ease-in-out infinite',
-                        'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 15s linear infinite',
-                        'twinkle': 'twinkle 4s ease-in-out infinite alternate',
-                    },
+                    boxShadow: { 'glow-primary': '0 0 15px rgba(56, 189, 248, 0.4)' },
+                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-glow': 'pulseGlow 2s infinite' },
                     keyframes: {
                         float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-                        pulseGlow: { '0%, 100%': { opacity: '0.8', filter: 'drop-shadow(0 0 6px currentColor)' }, '50%': { opacity: '0.3', filter: 'drop-shadow(0 0 2px currentColor)' } },
-                        twinkle: { '0%': { opacity: '0.2', transform: 'scale(0.8)' }, '100%': { opacity: '1', transform: 'scale(1.2)' } }
+                        pulseGlow: { '0%, 100%': { opacity: '1', transform: 'scale(1)' }, '50%': { opacity: '0.7', transform: 'scale(1.02)' } }
                     }
                 }
             }
         }
     </script>
     <style>
-        html, body { max-width: 100vw; overflow-x: hidden; position: relative; }
-        body { font-family: 'Mitr', sans-serif !important; background-color: #020617; color: #ffffff; background-image: radial-gradient(circle at 20% 30%, rgba(2, 132, 199, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.1) 0%, transparent 50%), radial-gradient(circle at 50% 0%, rgba(129, 140, 248, 0.05) 0%, transparent 40%); background-attachment: fixed; }
-        .eng-heading { font-family: 'Playfair Display', serif !important; }
-        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #020617; } ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+        body { font-family: 'Mitr', sans-serif !important; background-color: #020617; color: #ffffff; background-image: radial-gradient(circle at 20% 30%, rgba(2, 132, 199, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.1) 0%, transparent 50%); background-attachment: fixed; }
         .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.15); }
-        .text-gradient { background: linear-gradient(to right, #38bdf8, #818cf8, #38bdf8); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: gradientMove 6s linear infinite; }
-        .text-shadow-glow { text-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
-        @keyframes gradientMove { to { background-position: 200% center; } }
-        .editable-img { cursor: pointer; transition: 0.3s; min-height: 100px; background-color: rgba(15, 23, 42, 0.5); }
-        .editable-img:hover { opacity: 0.8; outline: 2px dashed #38bdf8; outline-offset: 4px; border-radius: inherit; }
+        .text-gradient { background: linear-gradient(to right, #38bdf8, #818cf8, #38bdf8); -webkit-background-clip: text; color: transparent; background-size: 200% auto; animation: gradMove 5s linear infinite; }
+        @keyframes gradMove { to { background-position: 200% center; } }
+        .editable-img { cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
+        .admin-active .editable-img { border-color: #38bdf8; animation: pulseGlow 2s infinite; }
+        input[type="number"]::-webkit-inner-spin-button { display: none; }
     </style>
 </head>
-<body class="antialiased min-h-screen relative overflow-x-hidden selection:bg-accent-primary selection:text-white">
+<body class="antialiased min-h-screen relative overflow-x-hidden selection:bg-accent-primary">
 
-    <div class="w-full overflow-x-hidden relative flex flex-col min-h-screen">
-
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        <svg class="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-            <defs><pattern id="stars" x="0" y="0" width="150" height="150" patternUnits="userSpaceOnUse"><circle cx="100" cy="30" r="1" fill="#38bdf8" opacity="0.5"/><path d="M12 2L13 9L20 10L13 11L12 18L11 11L4 10L11 9Z" fill="#fff" opacity="0.15" transform="scale(0.3) translate(350, 300)"/></pattern></defs>
-            <rect width="100%" height="100%" fill="url(#stars)" />
-        </svg>
-    </div>
-
-    <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-8 w-full">
-
-        <header class="text-center space-y-4 mb-4 relative flex flex-col items-center">
-            <div class="relative w-32 h-32 md:w-40 md:h-40 mb-2 group z-20">
-                <div class="absolute inset-0 bg-accent-white/10 rounded-full blur-2xl group-hover:bg-accent-white/20 transition-colors duration-700"></div>
-                <div class="absolute inset-0 border border-accent-white/50 rounded-full animate-spin-slow" style="border-top-color: transparent;"></div>
-                <img id="logo-img" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" alt="Logo" class="editable-img w-full h-full object-cover rounded-full border-2 border-accent-white/40 shadow-glow-white relative z-10 transition-transform duration-500 group-hover:scale-105">
+    <div class="max-w-2xl mx-auto px-4 py-10 relative z-10 flex flex-col gap-6">
+        
+        <header class="text-center space-y-4">
+            <div class="relative w-32 h-32 mx-auto group">
+                <div class="absolute inset-0 bg-accent-primary/20 rounded-full blur-xl group-hover:bg-accent-primary/40 transition-all duration-700"></div>
+                <img id="logo-img" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" class="editable-img w-full h-full object-cover rounded-full border-2 border-accent-primary/40 shadow-glow-primary relative z-10">
             </div>
-
-            <div class="relative mt-2">
-                <h1 class="eng-heading text-5xl md:text-7xl font-bold text-gradient tracking-wider py-1 text-shadow-glow">TA RAY STORE</h1>
+            <h1 class="text-5xl font-bold text-gradient tracking-tight">TA RAY STORE</h1>
+            <div class="bg-dark-card/80 backdrop-blur px-6 py-3 rounded-full border border-accent-primary/30 inline-block shadow-lg">
+                <h2 class="text-lg font-medium text-white">ร้าน Ta Ray รับฝากขาย / รับหาไอดี</h2>
             </div>
-
-            <p class="eng-heading text-xl text-accent-white italic tracking-widest uppercase flex justify-center items-center gap-3 mb-2 opacity-90">
-                <span class="w-8 h-px bg-accent-white/50"></span> Welcome <span class="w-8 h-px bg-accent-white/50"></span>
+            <p class="text-accent-primary/80 text-sm max-w-sm mx-auto leading-relaxed">
+                รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต<br>
+                <span class="text-white font-semibold">ป้ายไอดียังไม่รับทำ</span>
             </p>
-            
-            <div class="inline-flex items-center justify-center gap-3 bg-dark-card/90 backdrop-blur-md px-8 py-3.5 rounded-full border border-accent-primary/40 shadow-glow-primary relative z-10">
-                <h2 class="text-xl md:text-2xl font-medium text-accent-white tracking-wide">ร้าน Ta Ray รับฝากขาย</h2>
-            </div>
-            
-            <div class="mt-6 text-accent-white/80 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-5 rounded-2xl relative">
-                <p class="mb-1">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต</p>
-                <p><span class="text-accent-primary font-semibold">ป้ายไอดียังไม่รับทำ</span> และรับหาไอดี</p>
-            </div>
         </header>
 
-        <section class="glass-card p-6 rounded-2xl relative border-t-2 border-t-accent-primary">
-            <h3 class="text-xl text-accent-primary mb-2 flex items-center gap-3 font-medium">
-                <span class="w-1 h-5 bg-accent-primary rounded-full"></span> Status Bar (เช็คสถานะคิวงาน)
-            </h3>
-            <div class="text-center mt-4">
-                <p class="text-[14px] text-accent-white/80 mb-5">สามารถเช็คคิวงานและรายละเอียดการฝากขายได้ที่นี่</p>
-                <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 rounded-full border border-accent-primary/50 bg-accent-primary/10 text-accent-primary hover:bg-accent-primary hover:text-white transition-all font-medium">
-                    คลิกเพื่อเช็คคิวงาน <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </a>
+        <section class="glass-card p-5 rounded-3xl border-t-2 border-t-accent-primary shadow-2xl">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-2 h-6 bg-accent-primary rounded-full"></div>
+                <h3 class="text-xl font-semibold text-white">Status Bar (เช็คสถานะคิวงาน)</h3>
             </div>
+            <p class="text-sm text-white/60 mb-5">ตรวจสอบคิวงานและการฝากขายของคุณแบบ Real-time ได้ที่นี่</p>
+            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" 
+               class="flex items-center justify-center gap-2 w-full py-4 bg-accent-primary/10 border border-accent-primary/40 text-accent-primary rounded-2xl hover:bg-accent-primary hover:text-white transition-all duration-300 font-semibold shadow-inner">
+                คลิกเพื่อตรวจสอบคิวงาน
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
         </section>
 
-        <section class="glass-card p-6 rounded-2xl relative border-t-2 border-t-accent-orange">
-            <h3 class="text-xl text-accent-orange mb-5 flex items-center gap-3 font-medium">
-                <span class="w-1 h-5 bg-accent-orange rounded-full"></span> ระบบคำนวณเรทฝากขาย & หารหัส
-            </h3>
+        <section class="glass-card p-5 rounded-3xl border-t-2 border-t-accent-orange">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-2 h-6 bg-accent-orange rounded-full"></div>
+                <h3 class="text-xl font-semibold text-white">ระบบคำนวณเรทราคา</h3>
+            </div>
+            
             <div class="space-y-5">
-                <div class="flex gap-6 justify-center bg-black/30 py-3 rounded-xl border border-white/5">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="calcType" value="sell" class="accent-accent-primary w-4 h-4" checked>
-                        <span class="text-white">ฝากขายรหัส</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="calcType" value="find" class="accent-accent-primary w-4 h-4">
-                        <span class="text-white">ฝากหารหัส</span>
-                    </label>
+                <div class="flex gap-4 p-1 bg-black/20 rounded-xl border border-white/5">
+                    <button onclick="setType('sell')" id="btn-sell" class="flex-1 py-3 rounded-lg bg-accent-primary text-white font-medium transition-all">ฝากขาย</button>
+                    <button onclick="setType('find')" id="btn-find" class="flex-1 py-3 rounded-lg text-white/60 font-medium transition-all">ฝากหา</button>
                 </div>
 
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm text-accent-white/80">ระบุราคารหัส (บาท) หรือ งบที่มี</label>
-                    <input type="number" id="calcPriceInput" placeholder="เช่น 1500" class="w-full bg-dark-bg/80 border border-accent-primary/30 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-accent-primary/80 transition-all">
+                <div class="space-y-2">
+                    <label class="text-xs text-white/40 ml-1">ระบุราคา (บาท)</label>
+                    <input type="number" id="calcPriceInput" placeholder="เช่น 1500" class="w-full bg-dark-bg/60 border border-accent-primary/20 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent-primary transition-all shadow-inner">
                 </div>
 
-                <button onclick="calculateRate()" class="w-full bg-gradient-to-r from-accent-primary/80 to-accent-orange/80 hover:from-accent-primary hover:to-accent-orange text-white py-3.5 rounded-xl transition-all font-medium">
+                <button onclick="calculateRate()" class="w-full bg-gradient-to-r from-accent-primary to-accent-orange text-white py-4 rounded-xl font-bold shadow-glow-primary hover:opacity-90 transition-all">
                     คำนวณค่าธรรมเนียม
                 </button>
 
-                <div id="calcResultDisplay" class="hidden text-center p-5 bg-black/40 border border-accent-orange/30 rounded-xl mt-2">
-                    <p class="text-accent-white/80 text-sm">ค่าบริการที่ต้องชำระ:</p>
-                    <p class="text-4xl font-bold text-accent-orange mt-2" id="calcFeeText">0.-</p>
+                <div id="calcResult" class="hidden animate-float">
+                    <div class="bg-accent-primary/10 border border-accent-primary/30 p-5 rounded-2xl text-center">
+                        <p class="text-xs text-accent-primary uppercase tracking-widest mb-1">ค่าบริการที่ต้องชำระ</p>
+                        <p class="text-4xl font-bold text-white" id="fee-text">0.-</p>
+                    </div>
                 </div>
 
-                <div class="pt-6 border-t border-white/10">
-                    <p class="text-[14px] text-accent-white/50 mb-4 text-center">ตารางเรทราคาอ้างอิง</p>
-                    <div class="grid grid-cols-1 gap-6">
-                        <div class="text-center">
-                            <p class="text-sm text-accent-primary mb-2">✦ เรทราคาฝากขาย</p>
-                            <img id="rate-img-1" src="https://placehold.co/800x400/0f172a/38bdf8?text=คลิกเพื่อเพิ่มรูปเรทฝากขาย" alt="เรทฝากขาย" class="editable-img w-full rounded-xl border border-accent-primary/30 shadow-lg object-contain">
-                        </div>
-                        <div class="text-center">
-                            <p class="text-sm text-accent-orange mb-2">✦ เรทราคาหาไอดี</p>
-                            <img id="rate-img-2" src="https://placehold.co/800x400/0f172a/818cf8?text=คลิกเพื่อเพิ่มรูปเรทหาไอดี" alt="เรทหาไอดี" class="editable-img w-full rounded-xl border border-accent-orange/30 shadow-lg object-contain">
-                        </div>
+                <div class="pt-6 border-t border-white/5">
+                    <p class="text-xs text-center text-white/30 mb-4 uppercase tracking-widest">ตารางเรทราคาอ้างอิง (แอดมินคลิกเพื่อเปลี่ยน)</p>
+                    <div class="grid grid-cols-1 gap-4">
+                        <img id="rate-sell-img" src="https://via.placeholder.com/800x450/0f172a/38bdf8?text=Rate+Sell+Image" class="editable-img w-full rounded-2xl border border-white/10 shadow-lg">
+                        <img id="rate-find-img" src="https://via.placeholder.com/800x450/0f172a/818cf8?text=Rate+Find+Image" class="editable-img w-full rounded-2xl border border-white/10 shadow-lg">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="glass-card p-6 rounded-2xl relative border-t-2 border-t-accent-primary">
-            <h3 class="text-xl text-accent-primary mb-5 flex items-center gap-3 font-medium">
-                <span class="w-1 h-5 bg-accent-primary rounded-full"></span> วิธีการฝากขาย
-            </h3>
-            <div class="text-[15px] space-y-4 text-accent-white/90">
-                <p>การฝากขายทางร้าน <strong class="text-accent-orange">Ta Ray</strong> ต้องเตรียมรูปดังนี้:</p>
-                <div class="grid grid-cols-2 gap-3 text-sm text-accent-white/80 bg-black/20 p-4 rounded-xl border border-white/5">
-                    <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> สกิน</div>
-                    <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> เครื่องประดับ</div>
-                    <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> สัตว์เลี้ยง</div>
-                    <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> ของในคลัง</div>
-                    <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> ยอดเติม</div>
-                    <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> แรงค์</div>
-                </div>
-                <div class="flex items-start gap-3 mt-4 bg-accent-darkred/20 p-3.5 rounded-xl border border-accent-darkred/40">
-                    <p class="text-sm text-accent-white">และจะมีแบบฟอร์มให้กรอกรายละเอียดเพิ่มเติมเมื่อติดต่อเข้ามายังร้าน</p>
-                </div>
+        <section class="glass-card p-6 rounded-3xl">
+            <h3 class="text-lg font-semibold text-accent-primary mb-4">สิ่งที่ต้องเตรียมในการฝากขาย</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-center gap-2 text-sm text-white/70"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> สกิน / ไอเทม</div>
+                <div class="flex items-center gap-2 text-sm text-white/70"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> เครื่องประดับ</div>
+                <div class="flex items-center gap-2 text-sm text-white/70"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> สัตว์เลี้ยง</div>
+                <div class="flex items-center gap-2 text-sm text-white/70"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> ของในคลัง</div>
+                <div class="flex items-center gap-2 text-sm text-white/70"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> ยอดเติมเงิน</div>
+                <div class="flex items-center gap-2 text-sm text-white/70"><div class="w-1.5 h-1.5 bg-accent-primary rounded-full"></div> แรงค์ปัจจุบัน</div>
+            </div>
+            <div class="mt-6 p-4 bg-white/5 rounded-xl border border-white/10 text-xs text-center text-white/50">
+                เมื่อติดต่อเข้ามา แอดมินจะส่งแบบฟอร์มให้กรอกรายละเอียดเพิ่มเติม
             </div>
         </section>
 
-        <section class="flex flex-wrap justify-center gap-4 mt-2 pb-8">
-            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-4 rounded-full border-2 border-accent-primary bg-accent-primary/10 text-white hover:bg-accent-primary transition-all text-[16px] font-medium">
-                ติดต่อเราผ่าน Facebook
-            </a>
-        </section>
+        <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="w-full py-4 bg-[#1877F2] text-white rounded-2xl flex items-center justify-center gap-3 font-bold shadow-lg hover:scale-[1.02] transition-transform">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            ติดต่อผ่าน Facebook
+        </a>
 
-        <footer class="mt-4 border-t border-accent-darkred/40 pt-8 pb-6 text-center relative z-10 w-full">
-            <div class="flex justify-center items-center gap-3 mb-2">
-                <span class="eng-heading text-xl text-gradient">TA RAY STORE</span>
-            </div>
-            <p class="text-[13px] text-accent-white/50 font-light tracking-wide mt-2">© 2026 TA RAY STORE. All rights reserved.</p>
-            <button onclick="promptAdminLogin()" class="mt-6 text-[11px] text-accent-white/30 hover:text-accent-primary transition-colors">Admin Login</button>
-            <button id="logoutBtn" onclick="logoutAdmin()" class="hidden mt-2 text-[11px] text-red-400 hover:text-red-500 transition-colors">Logout Admin</button>
+        <footer class="text-center pt-6 opacity-30 text-[10px]">
+            <p>© 2026 TA RAY STORE. ALL RIGHTS RESERVED.</p>
+            <button onclick="adminLogin()" class="mt-2 hover:text-accent-primary">Admin Access</button>
+            <button id="logoutBtn" onclick="location.reload()" class="hidden mt-2 text-red-500">Logout</button>
         </footer>
+    </div>
 
-    </main>
-    </div> 
+    <input type="file" id="imgInput" accept="image/*" class="hidden">
 
-    <input type="file" id="imageUploader" accept="image/*" class="hidden">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
-        // ตรงนี้คือใส่ Config ตัวใหม่ล่าสุดของคุณแล้วครับ!
         const firebaseConfig = {
             apiKey: "AIzaSyCbuGsrs33N-jy-HDQJXwJJ4OniF6tP62w",
             authDomain: "tabayyy-d0a06.firebaseapp.com",
@@ -196,8 +147,7 @@
             projectId: "tabayyy-d0a06",
             storageBucket: "tabayyy-d0a06.firebasestorage.app",
             messagingSenderId: "449674427470",
-            appId: "1:449674427470:web:1fd9084009336927fd971f",
-            measurementId: "G-J39NTMVWF0"
+            appId: "1:449674427470:web:1fd9084009336927fd971f"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -205,82 +155,79 @@
         const storage = getStorage(app);
 
         let isAdmin = false;
-        let currentEditingImageId = null;
+        let currentImgId = "";
+        let calcType = "sell";
 
-        const imageIds = ['logo-img', 'rate-img-1', 'rate-img-2']; 
-        
-        imageIds.forEach(id => {
-            const imgRef = ref(db, 'images/' + id);
-            onValue(imgRef, (snapshot) => {
-                const url = snapshot.val();
-                if (url) {
-                    const el = document.getElementById(id);
-                    if (el) el.src = url;
-                }
+        // Real-time Update Images
+        const imgList = ["logo-img", "rate-sell-img", "rate-find-img"];
+        imgList.forEach(id => {
+            onValue(ref(db, "siteImages/" + id), (snap) => {
+                if(snap.val()) document.getElementById(id).src = snap.val();
             });
         });
 
-        window.promptAdminLogin = function() {
-            const password = prompt("กรุณาใส่รหัสผ่านแอดมิน:");
-            if (password === "taray12121") {
+        // Admin Auth
+        window.adminLogin = () => {
+            const pass = prompt("Enter Admin Password:");
+            if(pass === "taray12121") {
                 isAdmin = true;
-                alert("เข้าสู่ระบบแอดมินสำเร็จ! คลิกที่รูปภาพเพื่อเปลี่ยนรูปได้เลย");
-                document.getElementById('logoutBtn').classList.remove('hidden');
-            } else {
-                alert("รหัสผ่านไม่ถูกต้อง!");
-            }
+                document.body.classList.add("admin-active");
+                document.getElementById("logoutBtn").classList.remove("hidden");
+                alert("โหมดแอดมินทำงาน! คลิกที่รูปเพื่อเปลี่ยนรูปภาพ");
+            } else { alert("รหัสผ่านไม่ถูกต้อง!"); }
         };
 
-        window.logoutAdmin = function() {
-            isAdmin = false;
-            alert("ออกจากระบบแอดมินแล้ว");
-            document.getElementById('logoutBtn').classList.add('hidden');
-        };
-
-        document.querySelectorAll('.editable-img').forEach(img => {
-            img.addEventListener('click', function() {
-                if (!isAdmin) return; 
-                currentEditingImageId = this.id;
-                document.getElementById('imageUploader').click(); 
+        // Handle Image Click
+        document.querySelectorAll(".editable-img").forEach(img => {
+            img.addEventListener("click", () => {
+                if(!isAdmin) return;
+                currentImgId = img.id;
+                document.getElementById("imgInput").click();
             });
         });
 
-        document.getElementById('imageUploader').addEventListener('change', async function(e) {
+        // Upload to Firebase
+        document.getElementById("imgInput").addEventListener("change", async (e) => {
             const file = e.target.files[0];
-            if (!file || !isAdmin || !currentEditingImageId) return;
+            if(!file || !isAdmin) return;
 
-            const originalSrc = document.getElementById(currentEditingImageId).src;
-            document.getElementById(currentEditingImageId).style.opacity = '0.5';
+            const target = document.getElementById(currentImgId);
+            target.style.opacity = "0.3";
 
             try {
-                const fileRef = storageRef(storage, `uploads/${Date.now()}_${file.name}`);
-                await uploadBytes(fileRef, file);
-                const downloadURL = await getDownloadURL(fileRef);
-                await set(ref(db, 'images/' + currentEditingImageId), downloadURL);
-                alert("เปลี่ยนรูปภาพสำเร็จ!");
-            } catch (error) {
-                console.error(error);
-                alert("เกิดข้อผิดพลาดในการอัปโหลด!\nโปรดเช็คว่าได้ไปเปิด Rules ใน Firebase เป็น true แล้วหรือยัง\n\nError: " + error.message);
-                document.getElementById(currentEditingImageId).src = originalSrc;
-            } finally {
-                document.getElementById(currentEditingImageId).style.opacity = '1';
-                this.value = ''; 
-            }
+                const storagePath = sRef(storage, "uploads/" + currentImgId + "_" + Date.now());
+                await uploadBytes(storagePath, file);
+                const url = await getDownloadURL(storagePath);
+                await set(ref(db, "siteImages/" + currentImgId), url);
+                alert("เปลี่ยนรูปภาพเรียบร้อย!");
+            } catch (err) {
+                console.error(err);
+                alert("เกิดข้อผิดพลาด: โปรดตรวจสอบว่าตั้งค่า Rules ใน Firebase เป็น true ทั้งคู่แล้ว");
+            } finally { target.style.opacity = "1"; }
         });
 
-        window.calculateRate = function() {
-            const priceInput = document.getElementById('calcPriceInput').value;
-            const price = parseFloat(priceInput);
-            if (isNaN(price) || price <= 0) { alert("กรุณากรอกราคาให้ถูกต้อง"); return; }
-            const type = document.querySelector('input[name="calcType"]:checked').value;
+        // Calculator Logic
+        window.setType = (type) => {
+            calcType = type;
+            document.getElementById("btn-sell").className = type === "sell" ? "flex-1 py-3 rounded-lg bg-accent-primary text-white font-medium" : "flex-1 py-3 rounded-lg text-white/60 font-medium";
+            document.getElementById("btn-find").className = type === "find" ? "flex-1 py-3 rounded-lg bg-accent-primary text-white font-medium" : "flex-1 py-3 rounded-lg text-white/60 font-medium";
+        };
+
+        window.calculateRate = () => {
+            const price = parseFloat(document.getElementById("calcPriceInput").value);
+            if(!price || price <= 0) return alert("กรุณาใส่ราคาที่ถูกต้อง");
+            
             let fee = 0;
-            if (type === 'sell') {
-                if (price <= 999) fee = 15; else if (price <= 1499) fee = 25; else if (price <= 1999) fee = 30; else if (price <= 2499) fee = 45; else if (price <= 4499) fee = 57; else if (price <= 5999) fee = 65; else if (price <= 7500) fee = 80; else if (price <= 8500) fee = 95; else if (price <= 9999) fee = 145; else if (price < 14000) fee = Math.round(price * 0.019); else if (price < 19000) fee = Math.round(price * 0.025); else if (price < 30000) fee = Math.round(price * 0.035); else if (price < 50000) fee = Math.round(price * 0.045); else if (price < 70000) fee = Math.round(price * 0.047); else if (price < 100000) fee = Math.round(price * 0.05); else fee = Math.round(price * 0.055);
-            } else if (type === 'find') {
-                if (price <= 900) fee = 40; else if (price <= 1900) fee = 57; else if (price <= 3500) fee = 75; else if (price <= 6000) fee = 90; else if (price <= 9000) fee = 120; else if (price <= 9999) fee = 145; else if (price < 15000) fee = 170; else if (price < 30000) fee = 200; else if (price < 50000) fee = 250; else if (price < 100000) fee = 275; else fee = 300;
+            if(calcType === "sell") {
+                if(price < 1000) fee = price <= 900 ? 15 : 25;
+                else if(price < 1500) fee = 25; else if(price < 2000) fee = 30; else if(price < 2500) fee = 45; else if(price < 4500) fee = 57; else if(price < 6000) fee = 65; else if(price < 7501) fee = 80; else if(price < 8501) fee = 95; else if(price < 10000) fee = 145;
+                else if(price < 14000) fee = price * 0.019; else if(price < 19000) fee = price * 0.025; else if(price < 30000) fee = price * 0.035; else if(price < 50000) fee = price * 0.045; else if(price < 70000) fee = price * 0.047; else if(price < 100000) fee = price * 0.05; else fee = price * 0.055;
+            } else {
+                if(price <= 900) fee = 40; else if(price <= 1900) fee = 57; else if(price <= 3500) fee = 75; else if(price <= 6000) fee = 90; else if(price <= 9000) fee = 120; else if(price <= 9999) fee = 145; else if(price < 15000) fee = 170; else if(price < 30000) fee = 200; else if(price < 50000) fee = 250; else if(price < 100000) fee = 275; else fee = 300;
             }
-            document.getElementById('calcFeeText').innerText = fee + " บาท";
-            document.getElementById('calcResultDisplay').classList.remove('hidden');
+
+            document.getElementById("fee-text").innerText = Math.round(fee).toLocaleString() + ".-";
+            document.getElementById("calcResult").classList.remove("hidden");
         };
     </script>
 </body>
