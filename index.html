@@ -188,15 +188,16 @@
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
+        // ตรงนี้คือใส่ Config ตัวใหม่ล่าสุดของคุณแล้วครับ!
         const firebaseConfig = {
-            apiKey: "AIzaSyD3G85TUx08gNtnZeJFh8167IJwpHa-Gkw",
-            authDomain: "tabay-f23b5.firebaseapp.com",
-            databaseURL: "https://tabay-f23b5-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "tabay-f23b5",
-            storageBucket: "tabay-f23b5.firebasestorage.app",
-            messagingSenderId: "846273537826",
-            appId: "1:846273537826:web:175184b06beb512824677b",
-            measurementId: "G-4Z7SHL0QS4"
+            apiKey: "AIzaSyCbuGsrs33N-jy-HDQJXwJJ4OniF6tP62w",
+            authDomain: "tabayyy-d0a06.firebaseapp.com",
+            databaseURL: "https://tabayyy-d0a06-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "tabayyy-d0a06",
+            storageBucket: "tabayyy-d0a06.firebasestorage.app",
+            messagingSenderId: "449674427470",
+            appId: "1:449674427470:web:1fd9084009336927fd971f",
+            measurementId: "G-J39NTMVWF0"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -206,7 +207,6 @@
         let isAdmin = false;
         let currentEditingImageId = null;
 
-        // อัปเดต Array ให้ดึงรูป 3 รูป
         const imageIds = ['logo-img', 'rate-img-1', 'rate-img-2']; 
         
         imageIds.forEach(id => {
@@ -224,7 +224,7 @@
             const password = prompt("กรุณาใส่รหัสผ่านแอดมิน:");
             if (password === "taray12121") {
                 isAdmin = true;
-                alert("เข้าสู่ระบบแอดมินสำเร็จ! คลิกที่รูปภาพเพื่อเปลี่ยนรูปได้เลย\n\n**หมายเหตุ: ถ้ากดเปลี่ยนรูปแล้วไม่เปลี่ยน ต้องไปเปิดสิทธิ์ใน Firebase ก่อนนะครับ**");
+                alert("เข้าสู่ระบบแอดมินสำเร็จ! คลิกที่รูปภาพเพื่อเปลี่ยนรูปได้เลย");
                 document.getElementById('logoutBtn').classList.remove('hidden');
             } else {
                 alert("รหัสผ่านไม่ถูกต้อง!");
@@ -260,7 +260,7 @@
                 alert("เปลี่ยนรูปภาพสำเร็จ!");
             } catch (error) {
                 console.error(error);
-                alert("เกิดข้อผิดพลาดในการอัปโหลด!\n(โปรดเช็คว่าได้ไปตั้งค่า Rules ใน Firebase เป็น true หรือยัง)\n\nError: " + error.message);
+                alert("เกิดข้อผิดพลาดในการอัปโหลด!\nโปรดเช็คว่าได้ไปเปิด Rules ใน Firebase เป็น true แล้วหรือยัง\n\nError: " + error.message);
                 document.getElementById(currentEditingImageId).src = originalSrc;
             } finally {
                 document.getElementById(currentEditingImageId).style.opacity = '1';
