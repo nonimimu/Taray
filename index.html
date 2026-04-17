@@ -14,10 +14,10 @@
                 extend: {
                     colors: {
                         nua: {
-                            bg: '#F0F9FF',      /* ขาวฟ้านัว */
-                            card: 'rgba(255, 255, 255, 0.85)',
-                            sky: '#BAE6FD',     /* ฟ้าพาสเทล */
-                            slate: '#334155'    /* ตัวหนังสือสีเข้ม */
+                            bg: '#F8FAFC',
+                            card: 'rgba(255, 255, 255, 0.8)',
+                            sky: '#BAE6FD',
+                            slate: '#1E293B'
                         }
                     },
                     animation: {
@@ -36,27 +36,25 @@
     <style>
         body {
             font-family: 'Mitr', sans-serif !important;
-            background-color: #F0F9FF;
+            background-color: #F8FAFC;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(186, 230, 253, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(186, 230, 253, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.9) 0%, transparent 50%);
             background-attachment: fixed;
             color: #1E293B;
         }
         .eng-heading { font-family: 'Playfair Display', serif !important; }
         
-        /* Glassmorphism เหมือน Pinkjulie */
         .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(186, 230, 253, 0.5);
-            border-radius: 35px;
         }
 
-        /* Sidebar สไตล์นัวๆ ฝั่งซ้าย */
+        /* Sidebar ฝั่งซ้าย */
         .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); z-index: 1000; padding: 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #BAE6FD; }
         .sidebar.active { left: 0; }
-        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: white; width: 48px; height: 48px; border-radius: 15px; display: flex; justify-content: center; align-items: center; border: 1px solid #BAE6FD; color: #7DD3FC; cursor: pointer; box-shadow: 0 4px 12px rgba(186, 230, 253, 0.2); }
+        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: white; width: 44px; height: 44px; border-radius: 12px; display: flex; justify-content: center; align-items: center; border: 1px solid #BAE6FD; color: #7DD3FC; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
         .text-gradient {
             background: linear-gradient(to right, #64748B, #38BDF8, #64748B);
@@ -70,7 +68,7 @@
 
         .admin-only { display: none; }
         body.admin-mode-active .admin-only { display: block !important; }
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 10px; font-size: 11px; z-index: 50; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: #FF4B4B; color: white; padding: 4px 10px; border-radius: 10px; font-size: 11px; z-index: 50; }
     </style>
 </head>
 <body class="antialiased min-h-screen relative overflow-x-hidden">
@@ -84,24 +82,33 @@
         <h2 class="eng-heading text-4xl font-bold text-sky-500 mb-10">TA RAY</h2>
         <div class="flex flex-col gap-4">
             <a href="#profile" class="p-4 bg-sky-50 rounded-2xl text-sky-700 font-medium" onclick="toggleMenu()">Home</a>
-            <a href="#queue" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Queue Status</a>
+            <a href="#queue" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Queue</a>
             <a href="#calculator" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Calculator</a>
-            <a href="#rates" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Price Rates</a>
+            <a href="#rates" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Rates</a>
         </div>
     </nav>
 
     <div class="w-full relative flex flex-col min-h-screen">
-        <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-10">
+        
+        <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-40">
+            <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10%" cy="10%" r="2" fill="#BAE6FD" class="animate-twinkle" />
+                <circle cx="90%" cy="30%" r="1.5" fill="#BAE6FD" style="animation-delay: 1s" class="animate-twinkle" />
+                <circle cx="50%" cy="80%" r="2" fill="#BAE6FD" style="animation-delay: 2s" class="animate-twinkle" />
+            </svg>
+        </div>
 
-            <header class="text-center space-y-6 mb-4 relative flex flex-col items-center">
+        <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-12">
+
+            <header class="text-center space-y-4 mb-4 relative flex flex-col items-center">
                 <div class="relative w-36 h-36 md:w-44 md:h-44 mb-2 group z-20">
-                    <div class="absolute inset-0 bg-sky-200/30 rounded-full blur-2xl"></div>
+                    <div class="absolute inset-0 bg-sky-100 rounded-full blur-2xl"></div>
                     <div class="absolute inset-0 border border-sky-300 rounded-full animate-spin-slow" style="border-top-color: transparent;"></div>
-                    <div class="absolute inset-[-6px] border border-sky-100 rounded-full animate-spin-slow" style="border-bottom-color: transparent; animation-direction: reverse;"></div>
+                    <div class="absolute inset-[-5px] border border-sky-200 rounded-full animate-spin-slow" style="border-bottom-color: transparent; animation-direction: reverse;"></div>
                     
                     <img id="shop-profile-img" src="https://via.placeholder.com/150" class="w-full h-full object-cover rounded-full border-2 border-white shadow-xl relative z-10">
                     
-                    <div class="admin-only absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center text-white text-[10px] z-20 cursor-pointer" onclick="document.getElementById('profile-upload').click()">
+                    <div class="admin-only absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center text-white text-[10px] z-20 cursor-pointer font-bold" onclick="document.getElementById('profile-upload').click()">
                         เปลี่ยนรูป
                     </div>
                     <input type="file" id="profile-upload" class="hidden" accept="image/*" onchange="uploadProfileImg(this)">
@@ -109,38 +116,38 @@
 
                 <div class="relative">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full scale-[1.3] h-px bg-gradient-to-r from-transparent via-sky-300/40 to-transparent -z-10"></div>
-                    <h1 class="eng-heading text-6xl md:text-7xl font-bold text-gradient tracking-tighter py-1">Ta Ray</h1>
+                    <h1 class="eng-heading text-6xl md:text-7xl font-bold text-gradient py-1">Ta Ray</h1>
                 </div>
 
                 <p class="eng-heading text-xl text-sky-400 italic tracking-widest uppercase flex justify-center items-center gap-3 opacity-90">
                     <span class="w-8 h-px bg-sky-200"></span> Welcome <span class="w-8 h-px bg-sky-200"></span>
                 </p>
                 
-                <div class="inline-flex items-center justify-center gap-3 glass-card px-8 py-3.5 rounded-full border border-sky-200 shadow-lg relative group z-10">
+                <div class="inline-flex items-center justify-center gap-3 glass-card px-8 py-3.5 rounded-full border border-sky-100 shadow-lg relative group z-10">
                     <h2 class="text-xl md:text-2xl font-medium text-slate-700 tracking-wide">Cosmic Digital Service</h2>
                 </div>
                 
-                <div class="text-slate-500 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-6 rounded-3xl relative">
+                <div class="mt-6 text-slate-500 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-6 rounded-3xl relative">
                     <div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sky-300 rounded-tl-xl"></div>
                     <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-sky-300 rounded-br-xl"></div>
                     <p id="shop-desc" contenteditable="false">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
                 </div>
             </header>
 
-            <section id="queue" class="glass-card p-8 space-y-6">
+            <section id="queue" class="glass-card p-8 rounded-[40px] space-y-6">
                 <h3 class="eng-heading text-3xl text-slate-800 flex items-center gap-4 relative">
-                    <span class="w-1.5 h-8 bg-sky-400 rounded-full"></span> คิวงาน & ฝากขาย
+                    <span class="w-1.5 h-8 bg-sky-400 rounded-full"></span> Queue List
                 </h3>
                 <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="flex items-center justify-center gap-3 w-full bg-sky-500 text-white py-5 rounded-2xl font-bold shadow-lg shadow-sky-100 transition-all hover:scale-[1.01] active:scale-95 text-lg">
-                    ตรวจสอบคิวงานแบบ Real-time ✨
+                    ตรวจสอบคิวงาน ✨
                 </a>
                 <div id="queue-details" contenteditable="false" class="bg-sky-50/50 p-6 rounded-2xl border border-sky-100 text-slate-500 text-[15px] leading-relaxed italic text-center">
                     (กำลังโหลดข้อมูล...)
                 </div>
             </section>
 
-            <section id="calculator" class="glass-card p-8 space-y-8 relative overflow-hidden group">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-sky-100 rounded-full blur-3xl opacity-50"></div>
+            <section id="calculator" class="glass-card p-8 rounded-[40px] space-y-8 relative overflow-hidden group">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-sky-50 rounded-full blur-3xl opacity-50"></div>
                 <h3 class="eng-heading text-3xl text-slate-800 flex items-center gap-4">
                     <span class="w-1.5 h-8 bg-sky-400 rounded-full"></span> Calculator
                 </h3>
@@ -160,11 +167,11 @@
                     
                     <div class="bg-gradient-to-br from-sky-50 to-white rounded-3xl p-7 border border-sky-100 space-y-5">
                         <div class="flex justify-between items-center text-sm text-slate-500">
-                            <span>ค่าบริการ/ธรรมเนียม:</span>
+                            <span>Fee:</span>
                             <span id="fee-result" class="text-xl font-bold text-sky-600">0 ฿</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-sky-100 pt-5">
-                            <span class="font-bold text-slate-800 text-lg">ยอดสุทธิคงเหลือ:</span>
+                            <span class="font-bold text-slate-800 text-lg uppercase">Total:</span>
                             <span id="total-result" class="text-4xl font-bold text-slate-900">0 ฿</span>
                         </div>
                     </div>
@@ -178,8 +185,8 @@
                 </div>
                 <div id="gallery-rates" class="grid grid-cols-1 gap-8">
                     </div>
-                <button class="admin-only hidden w-full p-6 border-2 border-dashed border-sky-300 rounded-3xl text-sky-500 font-bold bg-white/50" onclick="document.getElementById('gallery-upload').click()">
-                    + เพิ่มรูปภาพเรทราคาใหม่
+                <button class="admin-only hidden w-full p-6 border-2 border-dashed border-sky-300 rounded-[30px] text-sky-500 font-bold bg-white/50" onclick="document.getElementById('gallery-upload').click()">
+                    + Add New Image
                 </button>
                 <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
             </section>
@@ -187,10 +194,10 @@
             <footer class="text-center space-y-6 pb-20 pt-10 border-t border-sky-100">
                 <div class="flex justify-center gap-4">
                     <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="px-10 py-3.5 bg-white border border-sky-100 rounded-full text-sm font-medium text-slate-600 shadow-sm hover:shadow-md transition-all">Facebook</a>
-                    <a href="#" class="px-10 py-3.5 bg-white border border-sky-100 rounded-full text-sm font-medium text-slate-600 shadow-sm hover:shadow-md transition-all">Line Messenger</a>
+                    <a href="#" class="px-10 py-3.5 bg-white border border-sky-100 rounded-full text-sm font-medium text-slate-600 shadow-sm hover:shadow-md transition-all">Line</a>
                 </div>
-                <p class="text-[11px] text-slate-400 tracking-widest uppercase">© 2026 TA RAY COSMIC STORE. All rights reserved.</p>
-                <button onclick="unlockAdmin()" class="text-[10px] text-sky-200 opacity-30 hover:opacity-100 transition-opacity">ADMIN PANEL</button>
+                <p class="text-[11px] text-slate-400 tracking-widest uppercase">© 2026 TA RAY COSMIC STORE</p>
+                <button onclick="unlockAdmin()" class="text-[10px] text-sky-200 opacity-20 hover:opacity-100 transition-opacity">ADMIN PANEL</button>
             </footer>
 
         </main>
@@ -198,7 +205,7 @@
 
     <div id="admin-actions" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[1001] hidden">
         <button class="w-full bg-slate-800 text-white font-bold py-5 rounded-2xl shadow-2xl transition-all active:scale-95" onclick="exitEditMode()">
-            บันทึกข้อมูลและปิดระบบ ✅
+            SAVE & CLOSE ✅
         </button>
     </div>
 
@@ -220,7 +227,6 @@
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
 
-        // Data Sync
         db.ref('settings').on('value', snap => {
             const d = snap.val();
             if(d) {
@@ -235,14 +241,13 @@
             cont.innerHTML = '';
             snap.forEach(child => {
                 cont.innerHTML += `
-                    <div class="relative glass-card p-4 group">
+                    <div class="relative glass-card p-4 group rounded-[40px] overflow-hidden">
                         <button class="delete-btn admin-only" onclick="deleteItem('${child.key}')">ลบรูป</button>
-                        <img src="${child.val().imgUrl}" class="w-full h-auto rounded-3xl shadow-sm transition-transform duration-500 group-hover:scale-[1.01]" onclick="window.open(this.src)">
+                        <img src="${child.val().imgUrl}" class="w-full h-auto rounded-[30px] shadow-sm transition-transform duration-500 group-hover:scale-[1.01]" onclick="window.open(this.src)">
                     </div>`;
             });
         });
 
-        // Admin Auth
         function unlockAdmin() {
             let pw = prompt("ADMIN PASSCODE:");
             if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") {
@@ -250,7 +255,6 @@
                 document.getElementById('shop-desc').contentEditable = "true";
                 document.getElementById('queue-details').contentEditable = "true";
                 document.getElementById('admin-actions').classList.remove('hidden');
-                alert("โหมดแก้ไขเปิดทำงาน!");
             }
         }
 
@@ -263,7 +267,7 @@
             document.getElementById('admin-actions').classList.add('hidden');
             document.getElementById('shop-desc').contentEditable = "false";
             document.getElementById('queue-details').contentEditable = "false";
-            alert("บันทึกข้อมูลแล้ว!");
+            alert("บันทึกแล้ว!");
         }
 
         function uploadProfileImg(input) {
@@ -282,7 +286,6 @@
         }
         function deleteItem(key) { if(confirm("ลบรูปนี้?")) db.ref('galleries/rates/'+key).remove(); }
 
-        // Calculator Logic (Ta Ray Original)
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
             const input = parseFloat(document.getElementById('calc-input').value) || 0;
