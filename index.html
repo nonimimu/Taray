@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ta Ray Cosmic Store</title>
+    <title>Ta Ray Cosmic Store - โฉมใหม่เริ่ดกว่าเดิม</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,42 +13,26 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            bg: '#0B132B',      /* Midnight Blue */
-                            card: '#3A506B',    /* Slate Blue */
-                            border: '#23324E'   /* Darker Slate Blue */
-                        },
-                        accent: {
-                            primary: '#FFFFFF',  /* White */
-                            light: '#FFFFFF',    /* White */
-                            medium: '#3A506B',   /* Slate Blue */
-                            white: '#FFFFFF'
+                        brand: {
+                            deep: '#0F172A',    /* Dark Blue Deep */
+                            glass: 'rgba(255, 255, 255, 0.1)',
+                            sky: '#BAE6FD',     /* Light Sky Blue */
+                            white: '#F0F9FF'    /* White Cloud */
                         }
                     },
-                    boxShadow: {
-                        'glow-primary': '0 0 15px rgba(255, 255, 255, 0.4)',
-                        'glow-light': '0 0 20px rgba(255, 255, 255, 0.6)',
-                        'glow-medium': '0 0 15px rgba(58, 80, 107, 0.3)',
-                    },
                     animation: {
-                        'float-slow': 'float 6s ease-in-out infinite',
-                        'float-med': 'float 4s ease-in-out infinite',
-                        'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 15s linear infinite',
-                        'twinkle': 'twinkle 4s ease-in-out infinite alternate',
+                        'spin-slow': 'spin 10s linear infinite',
+                        'spin-reverse': 'spin-reverse 12s linear infinite',
+                        'float': 'float 5s ease-in-out infinite',
                     },
                     keyframes: {
+                        'spin-reverse': {
+                            from { transform: rotate(360deg); },
+                            to { transform: rotate(0deg); }
+                        },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        pulseGlow: {
-                            '0%, 100%': { opacity: '0.8', filter: 'drop-shadow(0 0 6px currentColor)' },
-                            '50%': { opacity: '0.3', filter: 'drop-shadow(0 0 2px currentColor)' },
-                        },
-                        twinkle: {
-                            '0%': { opacity: '0.2', transform: 'scale(0.8)' },
-                            '100%': { opacity: '1', transform: 'scale(1.2)' },
+                            '50%': { transform: 'translateY(-15px)' }
                         }
                     }
                 }
@@ -56,341 +40,141 @@
         }
     </script>
     <style>
-        /* Prevent horizontal scroll on mobile devices */
-        html, body {
-            max-width: 100vw;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Force strictly to Mitr */
         body {
             font-family: 'Mitr', sans-serif !important;
-            background-color: #0B132B;
-            color: #ffffff;
+            background: #0B132B;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(58, 80, 107, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(186, 230, 253, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(58, 80, 107, 0.2) 0%, transparent 40%);
             background-attachment: fixed;
+            color: #F0F9FF;
         }
-        .eng-heading {
-            font-family: 'Playfair Display', serif !important;
-        }
+        .eng-heading { font-family: 'Playfair Display', serif !important; }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0B132B; }
-        ::-webkit-scrollbar-thumb { background: #23324E; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #FFFFFF; }
-
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: rgba(58, 80, 107, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(186, 230, 253, 0.2);
+            border-radius: 35px;
         }
 
-        /* Modal Transitions */
-        .modal {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            transform: scale(0.95) translateY(20px);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .modal.active .modal-content {
-            transform: scale(1) translateY(0);
-        }
-
-        /* Text Gradients */
-        .text-gradient {
-            background: linear-gradient(to right, #FFFFFF, #3A506B, #FFFFFF);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            animation: gradientMove 6s linear infinite;
-        }
-        .text-shadow-glow {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-        @keyframes gradientMove {
-            to { background-position: 200% center; }
-        }
-
-        /* ขีดใต้นีออนฉบับปรับปรุง */
         .heading-underline {
             position: relative;
             display: inline-flex;
-            align-items: center;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
-
         .heading-underline::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 45%;
-            height: 2px;
-            background: linear-gradient(90deg, #3A506B, rgba(58, 80, 107, 0));
-            box-shadow: 0 0 15px rgba(58, 80, 107, 0.8);
+            bottom: 0; left: 0;
+            width: 50px; height: 3px;
+            background: linear-gradient(90deg, #BAE6FD, transparent);
             border-radius: 99px;
+            box-shadow: 0 0 10px #BAE6FD;
         }
+
+        .text-gradient {
+            background: linear-gradient(to right, #FFFFFF, #BAE6FD, #FFFFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 5s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .delete-btn { display: none; position: absolute; top: 10px; right: 10px; background: #FF4B4B; color: white; padding: 5px 12px; border-radius: 12px; font-size: 12px; z-index: 50; }
+        body.admin-mode-active .delete-btn, body.admin-mode-active .admin-only { display: block !important; }
     </style>
 </head>
-<body class="antialiased min-h-screen relative overflow-x-hidden selection:bg-accent-primary selection:text-white">
+<body class="antialiased selection:bg-sky-400 selection:text-white">
 
-    <div class="w-full overflow-x-hidden relative flex flex-col min-h-screen">
-
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        <svg class="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <pattern id="elegant-stars" x="0" y="0" width="150" height="150" patternUnits="userSpaceOnUse">
-                    <path d="M12 2L12.5 10L20 10.5L12.5 11L12 19L11.5 11L4 10.5L11.5 10Z" fill="#3A506B" opacity="0.3" transform="scale(0.5) translate(40, 40)"/>
-                    <circle cx="100" cy="30" r="1" fill="#FFFFFF" opacity="0.5"/>
-                    <path d="M12 2L13 9L20 10L13 11L12 18L11 11L4 10L11 9Z" fill="#fff" opacity="0.15" transform="scale(0.3) translate(350, 300)"/>
-                    <circle cx="20" cy="120" r="1.5" fill="#FFFFFF" opacity="0.2"/>
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#elegant-stars)" />
-        </svg>
-
-        <svg class="absolute top-16 right-10 md:right-32 w-20 h-20 text-accent-medium/40 animate-float-slow" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-
-        <svg class="absolute bottom-32 left-10 w-12 h-12 text-accent-primary/20 animate-pulse-glow" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/>
-        </svg>
-    </div>
-
-    <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-8">
-
-        <header class="text-center space-y-4 mb-4 relative flex flex-col items-center">
-            
-            <div class="relative w-32 h-32 md:w-40 md:h-40 mb-2 group z-20">
-                <div class="absolute inset-0 bg-accent-white/10 rounded-full blur-2xl group-hover:bg-accent-white/20 transition-colors duration-700"></div>
-                <div class="absolute inset-0 border border-accent-white/50 rounded-full animate-spin-slow" style="border-top-color: transparent;"></div>
-                <div class="absolute inset-[-4px] border border-accent-white/30 rounded-full animate-spin-slow" style="border-bottom-color: transparent; animation-direction: reverse;"></div>
+    <main class="max-w-2xl mx-auto px-5 py-12 relative z-10 space-y-12">
+        
+        <header class="text-center space-y-6">
+            <div class="relative w-40 h-40 mx-auto group">
+                <div class="absolute inset-[-10px] border border-sky-400/30 rounded-full animate-spin-slow"></div>
+                <div class="absolute inset-[-4px] border border-white/40 rounded-full animate-spin-reverse"></div>
+                <div class="absolute inset-0 bg-sky-400/10 rounded-full blur-2xl"></div>
                 
-                <img 
-                    src="https://via.placeholder.com/150" 
-                    alt="Ta Ray Logo" 
-                    class="w-full h-full object-cover rounded-full border-2 border-accent-white/40 shadow-glow-white relative z-10 transition-transform duration-500 group-hover:scale-105"
-                >
+                <img id="shop-profile-img" src="https://via.placeholder.com/150" class="w-full h-full object-cover rounded-full border-2 border-white relative z-10">
                 
-                <svg class="absolute -top-1 -right-2 w-8 h-8 text-accent-white animate-twinkle z-20 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L13.1 9.9L21 11L13.1 12.1L12 20L10.9 12.1L3 11L10.9 9.9L12 2Z"/>
-                </svg>
+                <div id="edit-img-overlay" class="absolute inset-0 bg-black/70 text-white rounded-full hidden flex-col items-center justify-center text-[10px] z-20 cursor-pointer admin-only" onclick="document.getElementById('profile-upload').click()">
+                    เปลี่ยนรูป
+                </div>
+                <input type="file" id="profile-upload" class="hidden" accept="image/*" onchange="uploadProfileImg(this)">
             </div>
 
-            <div class="relative mt-2">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full scale-[1.2] h-px bg-gradient-to-r from-transparent via-accent-primary/30 to-transparent -z-10"></div>
-                
-                <h1 class="eng-heading text-6xl md:text-7xl font-bold text-gradient tracking-wider py-1 text-shadow-glow">
-                    Ta Ray
-                </h1>
+            <div class="space-y-2">
+                <h1 class="eng-heading text-6xl font-bold text-gradient">Ta Ray</h1>
+                <p class="eng-heading text-sm tracking-[0.4em] text-sky-300 uppercase opacity-80">Cosmic Service</p>
             </div>
 
-            <p class="eng-heading text-xl text-accent-white italic tracking-widest uppercase flex justify-center items-center gap-3 mb-2 opacity-90">
-                <span class="w-8 h-px bg-accent-white/50"></span>
-                Welcome
-                <span class="w-8 h-px bg-accent-white/50"></span>
-            </p>
-            
-            <div class="inline-flex items-center justify-center gap-3 bg-dark-card/90 backdrop-blur-md px-8 py-3.5 rounded-full border border-accent-primary/40 shadow-glow-primary relative group z-10 transition-all hover:border-accent-primary/80">
-                <svg class="absolute -left-2 -top-1 w-5 h-5 text-accent-medium opacity-80 animate-pulse" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/></svg>
-                
-                <h2 class="text-xl md:text-2xl font-medium text-accent-white tracking-wide drop-shadow-sm heading-underline">Cosmic Service</h2>
-                
-                <svg class="absolute -right-2 -bottom-1 w-4 h-4 text-accent-primary opacity-80 animate-pulse" style="animation-delay: 1s;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/></svg>
-            </div>
-            
-            <div class="mt-6 text-accent-white/80 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-5 rounded-2xl relative">
-                <div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-accent-medium/50 rounded-tl-xl"></div>
-                <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-accent-primary/50 rounded-br-xl"></div>
-                
-                <p id="shop-desc" contenteditable="false" class="mb-1">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
+            <div class="glass-panel p-6 max-w-md mx-auto relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400/50 to-transparent"></div>
+                <p id="shop-desc" contenteditable="false" class="text-sm leading-relaxed text-white/80">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
             </div>
         </header>
 
-        <section class="flex flex-col items-center gap-5 mt-2">
-            <h3 class="eng-heading text-3xl text-accent-primary flex items-center gap-4 relative heading-underline">
-                <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-accent-primary/50 rounded-full"></span>
-                <svg class="w-5 h-5 text-accent-medium animate-pulse-glow" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/></svg>
+        <section class="glass-panel p-8 space-y-6">
+            <h3 class="text-2xl font-bold heading-underline flex items-center gap-3">
                 ตารางคิวงาน
-                <svg class="w-5 h-5 text-accent-medium animate-pulse-glow" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/></svg>
             </h3>
-            <div class="flex flex-wrap justify-center gap-4 w-full px-2 mt-4">
-                <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="flex-1 min-w-[110px] max-w-[180px] bg-dark-card border border-accent-medium/30 hover:border-accent-medium text-accent-medium hover:text-white hover:bg-accent-medium/10 transition-all duration-300 py-4 rounded-2xl text-[15px] font-medium flex flex-col items-center gap-3 shadow-glow-medium group relative overflow-hidden text-center">
-                    <div class="absolute inset-0 bg-gradient-to-t from-accent-medium/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <svg class="w-7 h-7 group-hover:scale-110 transition-transform duration-300 drop-shadow-md z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.758a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"></path></svg>
-                    <span class="z-10">ตรวจสอบคิวงาน</span>
-                </a>
-            </div>
-            <div id="queue-details" contenteditable="false" class="w-full mt-6 text-accent-white/80 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-5 rounded-2xl relative text-center">
+            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="block w-full py-4 bg-sky-400/10 border border-sky-400/40 rounded-2xl text-center font-bold text-sky-300 hover:bg-sky-400 hover:text-white transition-all shadow-lg">
+                ดูคิวงานแบบ Real-time ✨
+            </a>
+            <div id="queue-details" contenteditable="false" class="p-4 bg-white/5 rounded-xl border border-white/10 text-sm text-white/70 italic">
                 (กำลังโหลดข้อมูล...)
             </div>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            
-            <section class="glass-card p-6 rounded-2xl relative overflow-hidden group border-t-2 border-t-accent-primary/50 col-span-1 md:col-span-2">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-accent-primary/10 rounded-full blur-2xl"></div>
-                
-                <h3 class="eng-heading text-2xl text-accent-primary mb-5 flex items-center gap-3 drop-shadow-md heading-underline">
-                    <span class="w-1 h-6 bg-accent-primary rounded-full"></span>
-                    เครื่องคำนวณยอดเงินสุทธิ
-                </h3>
-                
-                <div class="space-y-4 text-[15px]">
-                    <div class="flex justify-between items-end border-b border-accent-primary/20 pb-3 gap-4">
-                        <span class="text-white font-medium">ประเภทบริการ</span>
-                        <select id="calc-type" class="w-full max-w-[200px] bg-dark-card border border-accent-medium/30 rounded-full px-4 py-2 text-white outline-none focus:border-accent-medium transition-all" onchange="calculatePrice()">
-                            <option value="sell">ฝากขายไอดี (TABAY RATE)</option>
-                            <option value="find">หาไอดีให้ (TA RAY RATE)</option>
-                        </select>
+        <section class="glass-panel p-8 space-y-8">
+            <h3 class="text-2xl font-bold heading-underline">เครื่องคำนวณยอดเงิน</h3>
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest text-sky-400 font-bold ml-1">ประเภทบริการ</label>
+                    <select id="calc-type" class="w-full bg-slate-900/50 border border-white/10 rounded-2xl p-4 outline-none focus:border-sky-400 transition-all" onchange="calculatePrice()">
+                        <option value="sell">ฝากขายไอดี (TABAY RATE)</option>
+                        <option value="find">หาไอดีให้ (TA RAY RATE)</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest text-sky-400 font-bold ml-1">จำนวนเงิน</label>
+                    <input type="number" id="calc-input" class="w-full bg-slate-900/50 border border-white/10 rounded-2xl p-4 text-xl font-bold outline-none focus:border-sky-400" placeholder="0" oninput="calculatePrice()">
+                </div>
+                <div class="bg-sky-400/5 rounded-3xl p-6 border border-sky-400/20 space-y-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="opacity-60">ค่าธรรมเนียม:</span>
+                        <span id="fee-result" class="font-bold text-sky-300">0 ฿</span>
                     </div>
-                    <div class="flex justify-between items-end border-b border-accent-primary/20 pb-3 gap-4">
-                        <span class="text-white font-medium">ระบุจำนวนเงิน</span>
-                        <input type="number" id="calc-input" class="w-full max-w-[200px] bg-dark-card border border-accent-medium/30 rounded-full px-4 py-2 text-white outline-none focus:border-accent-medium transition-all" placeholder="0" oninput="calculatePrice()">
-                    </div>
-                    
-                    <div class="space-y-3 pt-2 text-accent-white/80">
-                        <p class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-accent-primary rounded-full"></span>ค่าบริการ/ธรรมเนียม <span id="fee-result" class="ml-auto text-white font-medium">0 ฿</span></p>
-                    </div>
-
-                    <div class="pt-5 border-t border-accent-primary/20">
-                        <h4 class="text-accent-medium font-semibold mb-3 tracking-wide" id="total-text">ยอดสุทธิที่ได้รับ</h4>
-                        <span id="total-result" class="text-3xl font-bold text-accent-medium drop-shadow-lg">0 ฿</span>
+                    <div class="flex justify-between items-center border-t border-white/10 pt-4">
+                        <span class="font-bold">ยอดสุทธิที่ได้รับ:</span>
+                        <span id="total-result" class="text-4xl font-bold text-white drop-shadow-md">0 ฿</span>
                     </div>
                 </div>
-            </section>
-
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            
-            <section class="glass-card p-6 rounded-2xl md:col-span-2 border-t-2 border-t-accent-primary/50 relative overflow-hidden group">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-accent-primary/10 rounded-full blur-2xl"></div>
-                
-                <h3 class="eng-heading text-2xl text-accent-primary mb-5 flex items-center gap-3 drop-shadow-md heading-underline">
-                    <span class="w-1 h-6 bg-accent-primary rounded-full"></span>
-                    อัลบั้มเรทราคา
-                </h3>
-                
-                <div id="gallery-rates" class="grid grid-cols-1 gap-6">
-                    </div>
-                
-                <button class="w-full p-5 border-2 border-dashed border-accent-primary/40 rounded-2xl text-sm text-accent-primary mt-8 hidden admin-mode-btn flex items-center justify-center gap-3 font-bold bg-accent-primary/5" onclick="document.getElementById('gallery-upload').click()">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> เพิ่มรูปเรทใหม่
-                </button>
-                <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
-            </section>
-
-            <section class="glass-card p-6 rounded-2xl border-t-2 border-t-accent-medium relative">
-                <h3 class="text-xl text-accent-medium mb-5 flex items-center gap-3 font-medium heading-underline">
-                    <span class="w-1 h-5 bg-accent-medium rounded-full"></span>
-                    ระยะเวลา
-                </h3>
-                <ul class="text-[15px] space-y-4 text-accent-white/80">
-                    <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 bg-accent-medium rounded-full mt-2 shrink-0"></span> ใช้เวลา 4–8 ชั่วโมง (ตามคิว)</li>
-                    <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 bg-accent-primary rounded-full mt-2 shrink-0"></span> งานเร่ง คิดราคา x2</li>
-                    <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 bg-accent-white rounded-full mt-2 shrink-0"></span> แนะนำให้ส่งเรฟก่อนทำ</li>
-                    <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 bg-accent-white rounded-full mt-2 shrink-0"></span> ตรวจงานภายใน 30 นาที</li>
-                </ul>
-            </section>
-
-            <section class="glass-card p-6 rounded-2xl border-t-2 border-t-accent-primary relative">
-                <h3 class="eng-heading text-xl text-accent-primary mb-5 flex items-center gap-3 heading-underline">
-                    <span class="w-1 h-5 bg-accent-primary rounded-full"></span>
-                    How to Order
-                </h3>
-                <div class="text-[15px] space-y-4 text-accent-white/90">
-                    <div class="flex gap-4">
-                        <div class="text-accent-primary font-bold text-lg eng-heading">01</div>
-                        <p class="pt-0.5">เขียนรายละเอียดร้านค้าส่งมาได้เลย เช่น ชื่อร้าน คอนแทค (ใส่ได้ไม่จำกัด)</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="text-accent-primary font-bold text-lg eng-heading">02</div>
-                        <p class="pt-0.5">ใส่ลิงก์ตัวอย่างงาน หากมีโลโก้ให้แนบลิงก์ Google Drive</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="text-accent-primary font-bold text-lg eng-heading">03</div>
-                        <p class="pt-0.5">ชำระเงินราคาเริ่มต้น 129.- (หากมีส่วนเกินจะแจ้งให้ชำระเพิ่มทีหลัง)</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="text-accent-primary font-bold text-lg eng-heading">04</div>
-                        <p class="pt-0.5">รอรับลิงก์งานได้เลย!</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="glass-card p-6 rounded-2xl md:col-span-2 border-t-2 border-t-accent-medium relative col-span-1 md:col-span-2">
-                <h3 class="text-xl text-accent-primary mb-5 flex items-center gap-3 font-medium heading-underline">
-                    <span class="w-1 h-5 bg-accent-medium rounded-full"></span>
-                    <span class="eng-heading text-accent-white">Details Shop</span> & เงื่อนไข
-                </h3>
-                <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-[15px] text-accent-white/80">
-                    <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-accent-primary/80 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        สามารถแคปหน้าเว็บที่อยากได้มาเป็นเรฟได้ หากไม่แคปแล้วสั่งแก้เยอะ จะกระทบคิวถัดไป
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-accent-primary/80 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        หากให้ออกแบบใหม่เป็นแนวเฉพาะของร้าน (ไม่ใช้เทมเพลต) บวกเพิ่ม 200 บาท
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-accent-primary/80 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        โอนเงินแล้วไม่คืนเงินทุกกรณี และไม่รับเปลี่ยนโดเมนในภายหลัง
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-accent-primary/80 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        งดจิกงดเร่งทุกกรณี (แม่ค้ามีงานประจำ จะรีบตอบกลับให้เร็วที่สุดค่ะ)
-                    </li>
-                </ul>
-            </section>
-        </div>
-
-        <section class="flex flex-wrap justify-center gap-4 mt-10 pb-8">
-            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="flex items-center gap-2 px-8 py-3.5 rounded-full border border-accent-white/40 bg-black/40 text-accent-white hover:bg-accent-primary hover:text-white hover:border-accent-primary hover:shadow-glow-primary transition-all text-[15px] font-medium group">
-                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                Facebook
-            </a>
-            <a href="#" target="_blank" class="flex items-center gap-2 px-8 py-3.5 rounded-full border border-accent-medium/50 bg-black/40 text-accent-medium hover:bg-accent-medium hover:text-white hover:shadow-glow-medium transition-all text-[15px] font-medium group">
-                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.972 8.948 9.387 9.619.385.083.91.258 1.042.593.118.3.076.77.037 1.054l-.168 1.002c-.053.315-.246 1.253 1.098.686 1.344-.567 7.243-4.265 9.715-7.147 1.942-2.27 2.889-4.043 2.889-5.807zM8.525 12.871H6.136a.434.434 0 01-.433-.434V7.545a.434.434 0 01.433-.433h2.389a.434.434 0 01.434.433v4.458h1.966a.434.434 0 01.433.434v.434a.434.434 0 01-.433.434zm3.931 0h-.866a.434.434 0 01-.433-.434V7.545a.434.434 0 01.433-.433h.866a.434.434 0 01.434.433v4.892a.434.434 0 01-.434.434zm3.179-2.616l-2.028-2.658a.43.43 0 00-.341-.167h-.82a.434.434 0 00-.434.433v4.892a.434.434 0 00.434.434h.866a.434.434 0 00.433-.434v-2.548l1.961 2.571a.43.43 0 00.342.167h.82a.434.434 0 00.434-.433V7.545a.434.434 0 00-.434-.433h-.866a.434.434 0 00-.434.433v2.711z"></path></svg>
-                Line
-            </a>
-            <a href="#" target="_blank" class="flex items-center gap-2 px-8 py-3.5 rounded-full border border-accent-primary/50 bg-black/40 text-accent-primary hover:bg-accent-primary hover:text-white hover:shadow-glow-primary transition-all text-[15px] font-medium group">
-                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
-                Instagram
-            </a>
+            </div>
         </section>
 
-        <footer class="mt-4 border-t border-accent-medium/40 pt-8 pb-6 text-center relative z-10 w-full">
-            <div class="flex justify-center items-center gap-3 mb-2">
-                <svg class="w-4 h-4 text-accent-medium" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/></svg>
-                <span class="eng-heading text-xl text-gradient">Ta Ray</span>
-                <svg class="w-4 h-4 text-accent-medium" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5L12 2Z"/></svg>
-            </div>
-            <p class="text-[13px] text-accent-white/50 font-light tracking-wide mt-2">© 2026 Ta Ray. All rights reserved.</p>
-            <p class="text-[11px] text-accent-primary/60 mt-1.5 italic eng-heading tracking-widest">Crafted with magic</p>
+        <section class="space-y-6">
+            <h3 class="text-2xl font-bold heading-underline">อัลบั้มเรทราคา</h3>
+            <div id="gallery-rates" class="grid grid-cols-1 gap-8">
+                </div>
+            <button class="w-full p-5 border-2 border-dashed border-sky-400/30 rounded-3xl text-sky-300 text-sm font-bold admin-only hidden" onclick="document.getElementById('gallery-upload').click()">
+                + เพิ่มรูปเรทราคา
+            </button>
+            <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
+        </section>
+
+        <footer class="grid grid-cols-2 gap-4 pb-20">
+            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="p-4 glass-panel text-center font-bold hover:bg-sky-400/20 transition-all border-none">Facebook</a>
+            <a href="#" class="p-4 glass-panel text-center font-bold hover:bg-sky-400/20 transition-all border-none">Line</a>
+            <button onclick="unlockAdmin()" class="col-span-2 text-[10px] opacity-20 hover:opacity-100">Admin Login</button>
         </footer>
 
     </main>
 
-    </div> <div id="admin-actions" class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[1001] hidden">
-        <button class="w-full bg-white text-black font-black py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3 text-lg" onclick="exitEditMode()">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> บันทึกข้อมูลและปิดระบบ ✅
+    <div id="admin-actions" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-xs z-[1000] hidden">
+        <button class="w-full bg-white text-slate-900 font-bold py-4 rounded-2xl shadow-2xl" onclick="exitEditMode()">
+            บันทึกข้อมูลและปิด ✅
         </button>
     </div>
 
@@ -410,34 +194,59 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // Load Settings
         db.ref('settings').on('value', snap => {
-            const d = snap.val();
-            if(d) {
-                // if(d.profileImg) document.getElementById('shop-profile-img').src = d.profileImg; // แทนที่ด้วยโลโก้ถ้ามี
-                if(d.description) document.getElementById('shop-desc').innerText = d.description;
-                if(d.queueDetails) document.getElementById('queue-details').innerHTML = d.queueDetails;
+            const data = snap.val();
+            if(data) {
+                if(data.profileImg) document.getElementById('shop-profile-img').src = data.profileImg;
+                if(data.description) document.getElementById('shop-desc').innerText = data.description;
+                if(data.queueDetails) document.getElementById('queue-details').innerHTML = data.queueDetails;
             }
         });
 
+        // Load Gallery
         db.ref('galleries/rates').on('value', snap => {
             const cont = document.getElementById('gallery-rates');
             cont.innerHTML = '';
             snap.forEach(child => {
                 cont.innerHTML += `
-                    <div class="relative glass-card p-4 border border-white/10 shadow-2xl overflow-hidden">
-                        <button class="delete-btn" onclick="deleteItem('${child.key}')">ลบ</button>
-                        <img src="${child.val().imgUrl}" class="w-full h-auto max-h-[520px] object-contain rounded-xl background rgba(0,0,0,0.5) border 1px solid rgba(255,255,255,0.05)" onclick="window.open(this.src)">
+                    <div class="relative glass-panel p-4 overflow-hidden group">
+                        <button class="delete-btn" onclick="deleteItem('${child.key}')">ลบรูป</button>
+                        <img src="${child.val().imgUrl}" class="w-full h-auto rounded-2xl shadow-lg group-hover:scale-[1.02] transition-transform">
                     </div>`;
             });
         });
+
+        // Admin Functions
+        function unlockAdmin() {
+            let pw = prompt("รหัสแอดมิน:");
+            if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") {
+                document.body.classList.add("admin-mode-active");
+                document.getElementById('shop-desc').contentEditable = "true";
+                document.getElementById('queue-details').contentEditable = "true";
+                document.getElementById('admin-actions').classList.remove('hidden');
+                alert("โหมดแอดมินเปิดแล้ว!");
+            }
+        }
 
         function exitEditMode() {
             db.ref('settings').update({
                 description: document.getElementById('shop-desc').innerText,
                 queueDetails: document.getElementById('queue-details').innerHTML
             });
-            document.querySelectorAll('.admin-mode-btn, #admin-actions, .delete-btn').forEach(el => el.style.display = 'none');
-            alert("บันทึกแล้ว!");
+            document.body.classList.remove("admin-mode-active");
+            document.getElementById('admin-actions').classList.add('hidden');
+            document.getElementById('shop-desc').contentEditable = "false";
+            document.getElementById('queue-details').contentEditable = "false";
+            alert("บันทึกสำเร็จ!");
+        }
+
+        function uploadProfileImg(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => db.ref('settings/profileImg').set(e.target.result);
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function uploadGalleryImg(input) {
@@ -447,8 +256,10 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        function deleteItem(key) { if(confirm("ลบรูปนี้ไหม?")) db.ref('galleries/rates/'+key).remove(); }
 
+        function deleteItem(key) { if(confirm("ลบรูปนี้?")) db.ref('galleries/rates/'+key).remove(); }
+
+        // Calculator Logic
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
             const input = parseFloat(document.getElementById('calc-input').value) || 0;
