@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TA RAY STORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
     
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
+    <script>
+        // Firebase Configuration (ตามที่คุณให้มา)
         const firebaseConfig = {
             apiKey: "AIzaSyD3G85TUx08gNtnZeJFh8167IJwpHa-Gkw",
             authDomain: "tabay-f23b5.firebaseapp.com",
@@ -23,296 +25,217 @@
             appId: "1:846273537826:web:175184b06beb512824677b",
             measurementId: "G-4Z7SHL0QS4"
         };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const storage = firebase.storage();
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        window.db = db; // Export for use in scripts
-        window.dbRef = ref;
-        window.dbSet = set;
-        window.dbOnValue = onValue;
-    </script>
-
-    <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            bg: '#020617',      /* Navy Black */
-                            card: '#0f172a',    /* Deep Blue Card */
-                            border: '#1e293b'   /* Slate Border */
-                        },
-                        accent: {
-                            primary: '#00f2ff',  /* Cyan (From your image) */
-                            secondary: '#3b82f6', /* Bright Blue */
-                            glow: '#00d4ff',
-                            white: '#ffffff'
-                        }
+                        dark: { bg: '#0a0000', card: '#140000', border: '#330000' },
+                        accent: { primary: '#ff1a1a', darkred: '#800000', orange: '#ff7300', white: '#ffffff' }
                     },
                     boxShadow: {
-                        'glow-primary': '0 0 15px rgba(0, 242, 255, 0.4)',
-                        'glow-blue': '0 0 20px rgba(59, 130, 246, 0.5)',
+                        'glow-primary': '0 0 15px rgba(255, 26, 26, 0.4)',
+                        'glow-darkred': '0 0 20px rgba(128, 0, 0, 0.6)',
+                        'glow-orange': '0 0 15px rgba(255, 115, 0, 0.3)',
                     },
                     animation: {
                         'float-slow': 'float 6s ease-in-out infinite',
-                        'pulse-glow': 'pulseGlow 3s infinite',
+                        'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'spin-slow': 'spin 15s linear infinite',
+                        'twinkle': 'twinkle 4s ease-in-out infinite alternate',
                     },
                     keyframes: {
                         float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-                        pulseGlow: { '0%, 100%': { opacity: '0.8', filter: 'drop-shadow(0 0 8px #00f2ff)' }, '50%': { opacity: '0.4' } }
+                        pulseGlow: { '0%, 100%': { opacity: '0.8' }, '50%': { opacity: '0.3' } },
+                        twinkle: { '0%': { opacity: '0.2', transform: 'scale(0.8)' }, '100%': { opacity: '1', transform: 'scale(1.2)' } }
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            font-family: 'Mitr', sans-serif !important;
-            background-color: #020617;
-            color: #ffffff;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
-            background-attachment: fixed;
-        }
-        .eng-heading { font-family: 'Playfair Display', serif !important; }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-        }
-        .text-gradient {
-            background: linear-gradient(to right, #00f2ff, #3b82f6, #00f2ff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientMove 4s linear infinite;
-        }
+        body { font-family: 'Mitr', sans-serif !important; background-color: #0a0000; color: #ffffff; background-attachment: fixed; }
+        .glass-card { background: rgba(20, 0, 0, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 26, 26, 0.15); }
+        .text-gradient { background: linear-gradient(to right, #ff1a1a, #ff7300, #ff1a1a); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: gradientMove 6s linear infinite; }
         @keyframes gradientMove { to { background-position: 200% center; } }
         
-        /* Admin Badge Style */
-        .admin-editable { cursor: pointer; position: relative; }
-        .admin-editable:hover::after {
-            content: "📷 เปลี่ยนรูป";
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6); display: flex; align-items: center;
-            justify-content: center; font-size: 12px; border-radius: inherit;
-        }
-        #admin-panel { display: none; }
-        body.admin-mode #admin-panel { display: block; }
+        /* Admin UI Helpers */
+        .admin-only { display: none; }
+        body.admin-mode .admin-only { display: block; }
+        .edit-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: 0.3s; border-radius: inherit; }
+        .relative:hover .edit-overlay { opacity: 1; }
     </style>
 </head>
-<body class="antialiased min-h-screen relative overflow-x-hidden selection:bg-accent-primary selection:text-black">
-
-    <div id="admin-panel" class="fixed top-4 left-4 z-[100] bg-dark-card border border-accent-primary p-3 rounded-xl shadow-glow-primary">
-        <p class="text-xs text-accent-primary mb-2 font-bold uppercase tracking-widest">Admin Mode Active</p>
-        <button onclick="logoutAdmin()" class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">ออกจากระบบ</button>
+<body class="antialiased min-h-screen relative overflow-x-hidden selection:bg-accent-primary selection:text-white">
+<div class="w-full overflow-x-hidden relative flex flex-col min-h-screen">
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        <svg class="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="url(#elegant-stars)" /></svg>
     </div>
 
-    <div class="w-full overflow-x-hidden relative flex flex-col min-h-screen">
-        <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-8 w-full">
-
-            <header class="text-center space-y-4 mb-4 relative flex flex-col items-center">
-                <div class="relative w-32 h-32 md:w-40 md:h-40 mb-2 group z-20">
-                    <div class="absolute inset-0 bg-accent-primary/10 rounded-full blur-2xl"></div>
-                    <div class="absolute inset-0 border border-accent-primary/50 rounded-full animate-spin-slow" style="border-top-color: transparent;"></div>
-                    <img id="store-logo" data-img-id="logo" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" 
-                         class="admin-editable w-full h-full object-cover rounded-full border-2 border-accent-primary/40 shadow-glow-primary relative z-10 transition-transform duration-500 hover:scale-105" onclick="triggerImageUpload('logo')">
-                </div>
-
-                <h1 class="eng-heading text-5xl md:text-6xl font-bold text-gradient tracking-wider py-1">TA RAY STORE</h1>
-                
-                <div class="w-full space-y-3 mt-4">
-                    <div class="flex items-center gap-2 bg-dark-card/50 border border-accent-primary/30 p-3 rounded-2xl w-full">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
-                        <p class="text-xs md:text-sm text-accent-white/80">เช็คสถานะคิวงานเรียลไทม์ได้ที่นี่</p>
+    <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-8">
+        <header class="text-center space-y-4 mb-4 relative flex flex-col items-center">
+            <div class="relative w-32 h-32 md:w-40 md:h-40 mb-2 group z-20">
+                <div class="absolute inset-0 bg-accent-white/10 rounded-full blur-2xl"></div>
+                <div class="relative w-full h-full rounded-full overflow-hidden border-2 border-accent-white/40 shadow-glow-white">
+                    <img id="store-logo" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" class="w-full h-full object-cover">
+                    <div class="admin-only edit-overlay" onclick="triggerUpload('store-logo')">
+                        <span class="text-xs bg-black/80 px-2 py-1 rounded">เปลี่ยนรูป</span>
                     </div>
-                    
-                    <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" 
-                       target="_blank" 
-                       class="block w-full border-2 border-dashed border-accent-primary/50 hover:border-accent-primary p-4 rounded-2xl text-center text-accent-primary font-medium transition-all hover:bg-accent-primary/5 duration-300">
-                        📑 คลิกเพื่อเช็คคิวงาน (Google Sheets)
+                </div>
+            </div>
+
+            <div class="relative mt-2">
+                <h1 class="text-6xl md:text-7xl font-bold text-gradient tracking-wider py-1 text-shadow-glow">TA RAY STORE</h1>
+            </div>
+
+            <div class="inline-flex items-center justify-center gap-3 bg-dark-card/90 backdrop-blur-md px-8 py-3.5 rounded-full border border-accent-primary/40 shadow-glow-primary relative z-10">
+                <h2 class="text-xl md:text-2xl font-medium text-accent-white tracking-wide">ร้าน Ta Ray รับฝากขาย</h2>
+            </div>
+            
+            <div class="mt-6 text-accent-white/80 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-5 rounded-2xl relative">
+                <p>รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดี</p>
+                <div class="mt-4 flex flex-col items-center">
+                    <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="border-2 border-dashed border-accent-orange px-6 py-2 rounded-xl text-accent-orange hover:bg-accent-orange/10 transition-all font-medium">
+                        คลิกเพื่อเช็คคิวงานที่นี่
                     </a>
                 </div>
-
-                <div class="inline-flex items-center justify-center gap-3 bg-dark-card/90 px-8 py-3.5 rounded-full border border-accent-primary/40 shadow-glow-primary mt-6">
-                    <h2 class="text-lg md:text-xl font-medium text-accent-white tracking-wide">ร้าน Ta Ray รับฝากขาย</h2>
-                </div>
-                
-                <p class="text-accent-white/70 text-sm max-w-lg mx-auto leading-relaxed glass-card p-5 rounded-2xl mt-4">
-                    รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต <br>
-                    <span class="text-accent-primary">รับหาไอดี และบริการดูแลอย่างมืออาชีพ</span>
-                </p>
-            </header>
-
-            <section id="fee-calculator" class="glass-card p-6 rounded-3xl border-t-2 border-t-accent-primary relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10">
-                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2V7h2v10z"/></svg>
-                </div>
-                
-                <h3 class="text-xl text-accent-primary mb-6 flex items-center gap-3 font-semibold">
-                    <span class="w-1 h-6 bg-accent-primary rounded-full"></span>
-                    ระบบคำนวณค่าบริการ
-                </h3>
-
-                <div class="grid grid-cols-2 gap-2 mb-6">
-                    <button onclick="setCalcMode('sell')" id="btn-sell" class="py-3 rounded-xl border border-accent-primary bg-accent-primary text-black font-bold transition-all">ฝากขาย</button>
-                    <button onclick="setCalcMode('find')" id="btn-find" class="py-3 rounded-xl border border-accent-primary text-accent-primary hover:bg-accent-primary/10 font-bold transition-all">ฝากหา</button>
+            </div>
+        </header>
+        <section class="glass-card p-6 rounded-2xl border-t-2 border-t-accent-orange">
+            <h3 class="text-2xl text-accent-orange mb-6 flex items-center gap-3 font-medium">
+                <span class="w-1 h-6 bg-accent-orange rounded-full"></span>
+                ระบบคำนวณค่าบริการ
+            </h3>
+            
+            <div class="space-y-6">
+                <div class="flex gap-2 p-1 bg-black/40 rounded-xl border border-white/10">
+                    <button onclick="setCalcType('sell')" id="btn-sell" class="flex-1 py-2 rounded-lg bg-accent-orange text-white transition-all">ฝากขาย</button>
+                    <button onclick="setCalcType('find')" id="btn-find" class="flex-1 py-2 rounded-lg text-accent-white/60 transition-all">ฝากหา</button>
                 </div>
 
                 <div class="space-y-4">
-                    <label id="input-label" class="text-sm text-accent-white/60 block">ระบุราคารหัส (บาท)</label>
-                    <input type="number" id="calc-input" placeholder="ตัวอย่าง: 1500" 
-                           class="w-full bg-black/40 border border-accent-primary/30 p-4 rounded-xl text-2xl font-bold text-accent-primary focus:outline-none focus:border-accent-primary shadow-inner">
-                    
-                    <div class="bg-accent-primary/10 border border-accent-primary/20 p-5 rounded-2xl text-center">
-                        <p class="text-xs text-accent-white/60 uppercase tracking-widest mb-1">ค่าธรรมเนียมที่ต้องชำระ</p>
-                        <p id="calc-result" class="text-4xl font-bold text-white">0.-</p>
-                    </div>
+                    <label id="label-price" class="block text-sm text-accent-white/70">ราคารหัสที่ต้องการตั้ง (บาท)</label>
+                    <input type="number" id="input-price" placeholder="ระบุจำนวนเงิน..." class="w-full bg-dark-bg border border-accent-white/20 rounded-xl px-4 py-3 focus:border-accent-orange outline-none transition-all">
                 </div>
-            </section>
-            <section id="services-images" class="space-y-6">
-                <h3 class="text-center eng-heading text-2xl text-accent-primary">Our Services</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <p class="text-xs text-center text-accent-white/50">เรทราคาฝากขาย</p>
-                        <img data-img-id="rate-sell" src="https://via.placeholder.com/400x500/0f172a/00f2ff?text=Rates+Sell" 
-                             class="admin-editable rounded-2xl border border-accent-primary/20 w-full shadow-lg" onclick="triggerImageUpload('rate-sell')">
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-xs text-center text-accent-white/50">เรทราคาฝากหา</p>
-                        <img data-img-id="rate-find" src="https://via.placeholder.com/400x500/0f172a/00f2ff?text=Rates+Find" 
-                             class="admin-editable rounded-2xl border border-accent-primary/20 w-full shadow-lg" onclick="triggerImageUpload('rate-find')">
-                    </div>
+
+                <div id="calc-result" class="hidden p-4 rounded-xl bg-accent-orange/10 border border-accent-orange/30 text-center animate-pulse-glow">
+                    <span class="text-accent-white/80">ค่าบริการสุทธิ: </span>
+                    <span id="fee-display" class="text-3xl font-bold text-accent-orange">0</span>
+                    <span class="text-accent-orange ml-1">บาท</span>
                 </div>
-            </section>
+                
+                <button onclick="calculateFee()" class="w-full py-4 bg-gradient-to-r from-accent-orange to-accent-primary rounded-xl font-bold text-white shadow-glow-orange hover:scale-[1.02] transition-transform">คำนวณตอนนี้</button>
+            </div>
+        </section>
 
-            <section class="glass-card p-6 rounded-2xl border-l-4 border-accent-primary">
-                <h3 class="text-lg text-accent-primary mb-4 font-bold flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    วิธีการฝากขายทางร้าน Ta Ray
-                </h3>
-                <ul class="text-sm space-y-3 text-accent-white/80">
-                    <li class="flex items-start gap-3"><span class="text-accent-primary">●</span> เตรียมรูป: สกิน, เครื่องประดับ, สัตว์เลี้ยง</li>
-                    <li class="flex items-start gap-3"><span class="text-accent-primary">●</span> แคปหน้าคลัง, ยอดเติม, แรงค์ปัจจุบัน</li>
-                    <li class="flex items-start gap-3"><span class="text-accent-primary">●</span> กรอกแบบฟอร์มที่แอดมินส่งให้</li>
-                </ul>
-            </section>
-
-            <section class="flex flex-wrap justify-center gap-4 py-6">
-                <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" 
-                   class="flex items-center gap-3 px-10 py-4 rounded-full bg-accent-secondary/20 border border-accent-secondary text-white hover:bg-accent-secondary transition-all shadow-glow-blue font-bold">
-                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                   FACEBOOK CONTACT
-                </a>
-            </section>
-
-            <input type="file" id="admin-file-input" class="hidden" accept="image/*">
-
-            <footer class="text-center py-10 border-t border-accent-primary/10">
-                <p class="text-[11px] text-accent-white/30 uppercase tracking-[0.3em]">Admin Login (Click Icon)</p>
-                <div class="cursor-pointer opacity-20 hover:opacity-100 transition-opacity mt-2" onclick="promptAdmin()">
-                    <svg class="w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+        <section class="glass-card p-6 rounded-2xl border-t-2 border-t-accent-primary">
+            <h3 class="text-xl text-accent-primary mb-4 flex items-center gap-3 font-medium">
+                <span class="w-1 h-5 bg-accent-primary rounded-full"></span>
+                สิ่งที่ต้องเตรียมเพื่อฝากขาย
+            </h3>
+            <div class="grid grid-cols-2 gap-3 text-sm text-accent-white/80">
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5">สกิน/เครื่องประดับ</div>
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5">สัตว์เลี้ยง/ของในคลัง</div>
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5">ยอดเติม/แรงค์</div>
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5">กรอกแบบฟอร์มร้าน</div>
+            </div>
+            <div class="mt-6 relative rounded-xl overflow-hidden border border-white/10 aspect-video">
+                <img id="rate-img" src="https://i.postimg.cc/mD3yv0wH/rate.jpg" class="w-full h-full object-cover">
+                <div class="admin-only edit-overlay" onclick="triggerUpload('rate-img')">
+                    <span class="bg-black/80 px-3 py-2 rounded">อัปโหลดรูปเรทราคาใหม่</span>
                 </div>
-            </footer>
-        </main>
-    </div>
+            </div>
+        </section>
 
+        <div class="text-center opacity-20 hover:opacity-100 transition-opacity">
+            <button onclick="promptAdmin()" class="text-[10px] text-accent-white">Admin Login</button>
+            <input type="file" id="file-input" class="hidden" accept="image/*" onchange="handleFileUpload(event)">
+        </div>
     <script>
-        // --- 1. ระบบคำนวณ (Logic จากรูปที่ส่งมา) ---
-        let calcMode = 'sell';
-        const calcInput = document.getElementById('calc-input');
-        const calcResult = document.getElementById('calc-result');
+        let currentCalcType = 'sell';
+        let targetImgId = '';
 
-        function setCalcMode(mode) {
-            calcMode = mode;
-            document.getElementById('btn-sell').className = mode === 'sell' ? 'py-3 rounded-xl border border-accent-primary bg-accent-primary text-black font-bold' : 'py-3 rounded-xl border border-accent-primary text-accent-primary hover:bg-accent-primary/10 font-bold';
-            document.getElementById('btn-find').className = mode === 'find' ? 'py-3 rounded-xl border border-accent-primary bg-accent-primary text-black font-bold' : 'py-3 rounded-xl border border-accent-primary text-accent-primary hover:bg-accent-primary/10 font-bold';
-            document.getElementById('input-label').innerText = mode === 'sell' ? 'ระบุราคารหัสที่ต้องการขาย (บาท)' : 'ระบุงบประมาณที่มี (บาท)';
-            calculate();
+        function setCalcType(type) {
+            currentCalcType = type;
+            document.getElementById('btn-sell').className = type === 'sell' ? 'flex-1 py-2 rounded-lg bg-accent-orange text-white' : 'flex-1 py-2 rounded-lg text-accent-white/60';
+            document.getElementById('btn-find').className = type === 'find' ? 'flex-1 py-2 rounded-lg bg-accent-orange text-white' : 'flex-1 py-2 rounded-lg text-accent-white/60';
+            document.getElementById('label-price').innerText = type === 'sell' ? 'ราคารหัสที่ต้องการตั้ง (บาท)' : 'งบประมาณที่มี (บาท)';
         }
 
-        function calculate() {
-            const val = parseFloat(calcInput.value) || 0;
+        function calculateFee() {
+            const price = parseFloat(document.getElementById('input-price').value);
+            if (!price) return;
+            
             let fee = 0;
+            // คำนวณตามเรทที่ระบุในรูปภาพ (ตัวอย่างเรทมาตรฐาน)
+            if (price <= 500) fee = 20;
+            else if (price <= 1000) fee = 30;
+            else if (price <= 2000) fee = 40;
+            else fee = 50;
 
-            if (calcMode === 'sell') {
-                if (val <= 300) fee = 30;
-                else if (val <= 500) fee = 40;
-                else if (val <= 1000) fee = 50;
-                else if (val <= 2000) fee = 70;
-                else if (val <= 3000) fee = 100;
-                else if (val <= 5000) fee = 150;
-                else fee = 200;
-            } else {
-                if (val <= 500) fee = 30;
-                else if (val <= 1000) fee = 50;
-                else if (val <= 3000) fee = 80;
-                else if (val <= 5000) fee = 100;
-                else fee = 150;
-            }
-            calcResult.innerText = fee + ".-";
+            document.getElementById('fee-display').innerText = fee;
+            document.getElementById('calc-result').classList.remove('hidden');
         }
-        calcInput.addEventListener('input', calculate);
 
-        // --- 2. ระบบแอดมินและ Firebase ---
-        let currentEditingId = null;
-
+        // --- Admin System ---
         function promptAdmin() {
-            const pass = prompt("กรุณาใส่รหัสผ่านแอดมิน:");
+            const pass = prompt("กรุณากรอกรหัสผ่านแอดมิน:");
             if (pass === "taray12121") {
                 document.body.classList.add('admin-mode');
-                alert("เข้าสู่ระบบแอดมินแล้ว! คลิกที่รูปภาพเพื่อเปลี่ยนรูปได้เลย");
-            } else if (pass) {
+                alert("ยินดีต้อนรับแอดมิน! คุณสามารถคลิกที่รูปภาพเพื่อเปลี่ยนรูปได้แล้ว");
+            } else {
                 alert("รหัสผ่านไม่ถูกต้อง");
             }
         }
 
-        function logoutAdmin() {
-            document.body.classList.remove('admin-mode');
+        function triggerUpload(id) {
+            targetImgId = id;
+            document.getElementById('file-input').click();
         }
 
-        function triggerImageUpload(imgId) {
-            if (!document.body.classList.contains('admin-mode')) return;
-            currentEditingId = imgId;
-            document.getElementById('admin-file-input').click();
-        }
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !targetImgId) return;
 
-        document.getElementById('admin-file-input').onchange = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            const loadingToast = document.createElement('div');
+            loadingToast.className = "fixed bottom-10 left-1/2 -translate-x-1/2 bg-accent-orange text-white px-6 py-3 rounded-full z-[100] shadow-xl";
+            loadingToast.innerText = "กำลังอัปโหลดรูปภาพ...";
+            document.body.appendChild(loadingToast);
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64 = event.target.result;
-                // บันทึกลง Firebase
-                if (window.db) {
-                    const imgRef = window.dbRef(window.db, 'siteImages/' + currentEditingId);
-                    window.dbSet(imgRef, base64).then(() => {
-                        alert("อัปเดตรูปภาพเรียบร้อย!");
-                    });
-                }
-            };
-            reader.readAsDataURL(file);
-        };
+            try {
+                // Upload to Firebase Storage
+                const storageRef = storage.ref(`images/${targetImgId}`);
+                await storageRef.put(file);
+                const url = await storageRef.getDownloadURL();
 
-        // โหลดรูปภาพจาก Firebase เมื่อหน้าเว็บเปิด
-        window.addEventListener('load', () => {
-            if (window.db) {
-                const imagesRef = window.dbRef(window.db, 'siteImages');
-                window.dbOnValue(imagesRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        for (let id in data) {
-                            const imgElement = document.querySelector(`[data-img-id="${id}"]`);
-                            if (imgElement) imgElement.src = data[id];
-                        }
-                    }
-                });
+                // Save URL to Database
+                await db.ref(`settings/${targetImgId}`).set(url);
+                
+                // Update UI
+                document.getElementById(targetImgId).src = url;
+                alert("อัปเดตรูปภาพสำเร็จ!");
+            } catch (error) {
+                console.error(error);
+                alert("เกิดข้อผิดพลาดในการอัปโหลด");
+            } finally {
+                loadingToast.remove();
             }
-        });
+        }
+
+        // Load saved images on start
+        window.onload = () => {
+            db.ref('settings').once('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    for (const id in data) {
+                        const img = document.getElementById(id);
+                        if (img) img.src = data[id];
+                    }
+                }
+            });
+        };
     </script>
-</body>
-</html>
+
