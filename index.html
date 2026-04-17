@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ta Ray Cosmic Store - โฉมใหม่นัวๆ ขาวฟ้า</title>
+    <title>Ta Ray Cosmic Store - Soft White Blue Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,193 +13,192 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            deep: '#E0F2FE',    /* Very Pale Blue */
-                            glass: 'rgba(255, 255, 255, 0.7)',
-                            sky: '#BAE6FD',     /* Light Sky Blue */
-                            white: '#FFFFFF'    /* Pure White */
+                        nua: {
+                            bg: '#F0F9FF',      /* ขาวฟ้านัว */
+                            card: 'rgba(255, 255, 255, 0.85)',
+                            sky: '#BAE6FD',     /* ฟ้าพาสเทล */
+                            slate: '#334155'    /* ตัวหนังสือสีเข้ม */
                         }
                     },
                     animation: {
-                        'spin-slow': 'spin 10s linear infinite',
-                        'spin-reverse': 'spin-reverse 12s linear infinite',
-                        'float': 'float 5s ease-in-out infinite',
+                        'spin-slow': 'spin 15s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'twinkle': 'twinkle 4s ease-in-out infinite alternate',
                     },
                     keyframes: {
-                        'spin-reverse': {
-                            from { transform: rotate(360deg); },
-                            to { transform: rotate(0deg); }
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-15px)' }
-                        }
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+                        twinkle: { '0%': { opacity: '0.2', transform: 'scale(0.8)' }, '100%': { opacity: '1', transform: 'scale(1.2)' } }
                     }
                 }
             }
         }
     </script>
     <style>
-        :root {
-            --bg-deep: #F0F9FF;
-            --bg-card: rgba(255, 255, 255, 0.9);
-            --neon-blue: #BAE6FD;
-            --neon-blue-glow: rgba(186, 230, 253, 0.6);
-        }
-
         body {
             font-family: 'Mitr', sans-serif !important;
-            background-color: var(--bg-deep);
+            background-color: #F0F9FF;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(186, 230, 253, 0.3) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(240, 249, 255, 0.4) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(186, 230, 253, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 50%);
             background-attachment: fixed;
-            color: #0F172A; /* เปลี่ยนเป็นสีเข้มเพื่อให้ตัดกับพื้นหลังสว่าง */
-            margin: 0; overflow-x: hidden;
+            color: #1E293B;
         }
         .eng-heading { font-family: 'Playfair Display', serif !important; }
         
-        .stars { position: fixed; inset: 0; pointer-events: none; z-index: -1; background: transparent url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1.5" fill="%23FFFFFF" opacity="0.8"/><circle cx="150" cy="80" r="1" fill="%23BAE6FD" opacity="0.6"/><circle cx="80" cy="150" r="2" fill="%23FFFFFF" opacity="0.9"/></svg>') repeat; animation: twinkle 10s infinite alternate; }
-        .shooting-star { position: fixed; width: 2px; height: 50px; background: linear-gradient(to bottom, transparent, var(--neon-blue), transparent); transform: rotate(-45deg); animation: shoot 5s infinite; opacity: 0; z-index: -1; }
-        @keyframes twinkle { 0% { opacity: 0.4; } 100% { opacity: 1; } }
-        @keyframes shoot { 0% { transform: translate(100vw, -10vh) rotate(-45deg); opacity: 1; } 20% { transform: translate(20vw, 70vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
-
-        /* Lightning FX */
-        @keyframes flash { 0%, 95%, 98%, 100% { opacity: 0; } 96% { opacity: 0.6; filter: brightness(1.5); } 97% { opacity: 0.1; } }
-        .ambient-flash { position: fixed; inset: 0; pointer-events: none; z-index: -1; opacity: 0; animation: flash 10s infinite; background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2) 0%, transparent 70%); }
-
-        .glass-panel {
-            background: var(--bg-card);
+        /* Glassmorphism เหมือน Pinkjulie */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(186, 230, 253, 0.4);
+            border: 1px solid rgba(186, 230, 253, 0.5);
             border-radius: 35px;
         }
 
-        .heading-underline {
-            position: relative;
-            display: inline-flex;
-            padding-bottom: 10px;
-        }
-        .heading-underline::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 50px; height: 3px;
-            background: linear-gradient(90deg, #BAE6FD, transparent);
-            border-radius: 99px;
-            box-shadow: 0 0 10px #BAE6FD;
-        }
+        /* Sidebar สไตล์นัวๆ ฝั่งซ้าย */
+        .sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); z-index: 1000; padding: 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #BAE6FD; }
+        .sidebar.active { left: 0; }
+        .hamburger-btn { position: fixed; top: 15px; left: 15px; z-index: 100; background: white; width: 48px; height: 48px; border-radius: 15px; display: flex; justify-content: center; align-items: center; border: 1px solid #BAE6FD; color: #7DD3FC; cursor: pointer; box-shadow: 0 4px 12px rgba(186, 230, 253, 0.2); }
 
         .text-gradient {
-            background: linear-gradient(to right, #FFFFFF, #BAE6FD, #FFFFFF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(to right, #64748B, #38BDF8, #64748B);
             background-size: 200% auto;
-            animation: shine 5s linear infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 6s linear infinite;
         }
-        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes gradientMove { to { background-position: 200% center; } }
 
-        .delete-btn { display: none; position: absolute; top: 10px; right: 10px; background: #FF4B4B; color: white; padding: 5px 12px; border-radius: 12px; font-size: 12px; z-index: 50; }
-        body.admin-mode-active .delete-btn, body.admin-mode-active .admin-only { display: block !important; }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #BAE6FD; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #F0F9FF; }
+        .admin-only { display: none; }
+        body.admin-mode-active .admin-only { display: block !important; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 10px; font-size: 11px; z-index: 50; }
     </style>
 </head>
-<body class="antialiased selection:bg-sky-200 selection:text-slate-900">
+<body class="antialiased min-h-screen relative overflow-x-hidden">
 
-    <div class="stars"></div>
-    <div class="shooting-star" style="top: 15%; left: 60%; animation-delay: 2s;"></div>
-    <div class="ambient-flash"></div>
+    <div class="hamburger-btn" onclick="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </div>
 
-    <main class="max-w-2xl mx-auto px-5 py-12 relative z-10 space-y-12">
-        
-        <header class="text-center space-y-6">
-            <div class="relative w-40 h-40 mx-auto group">
-                <div class="absolute inset-[-10px] border border-sky-200/50 rounded-full animate-spin-slow"></div>
-                <div class="absolute inset-[-4px] border border-white/60 rounded-full animate-spin-reverse"></div>
-                <div class="absolute inset-0 bg-sky-100 rounded-full blur-2xl"></div>
-                
-                <img id="shop-profile-img" src="https://via.placeholder.com/150" class="w-full h-full object-cover rounded-full border-2 border-white relative z-10">
-                
-                <div id="edit-img-overlay" class="absolute inset-0 bg-white/80 text-sky-400 rounded-full hidden flex-col items-center justify-center text-[10px] z-20 cursor-pointer admin-only" onclick="document.getElementById('profile-upload').click()">
-                    เปลี่ยนรูป
-                </div>
-                <input type="file" id="profile-upload" class="hidden" accept="image/*" onchange="uploadProfileImg(this)">
-            </div>
+    <nav id="sidebar" class="sidebar shadow-2xl">
+        <div class="text-left mb-10" onclick="toggleMenu()"><svg class="w-8 h-8 text-sky-400 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></div>
+        <h2 class="eng-heading text-4xl font-bold text-sky-500 mb-10">TA RAY</h2>
+        <div class="flex flex-col gap-4">
+            <a href="#profile" class="p-4 bg-sky-50 rounded-2xl text-sky-700 font-medium" onclick="toggleMenu()">Home</a>
+            <a href="#queue" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Queue Status</a>
+            <a href="#calculator" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Calculator</a>
+            <a href="#rates" class="p-4 hover:bg-sky-50 rounded-2xl transition-all" onclick="toggleMenu()">Price Rates</a>
+        </div>
+    </nav>
 
-            <div class="space-y-2">
-                <h1 class="eng-heading text-6xl font-bold text-gradient">Ta Ray</h1>
-                <p class="eng-heading text-sm tracking-[0.4em] text-sky-600 uppercase opacity-80">Cosmic Service</p>
-            </div>
+    <div class="w-full relative flex flex-col min-h-screen">
+        <main class="max-w-3xl mx-auto px-4 py-12 relative z-10 flex flex-col gap-10">
 
-            <div class="glass-panel p-6 max-w-md mx-auto relative overflow-hidden group">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-200 to-transparent"></div>
-                <p id="shop-desc" contenteditable="false" class="text-sm leading-relaxed text-slate-700">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
-            </div>
-        </header>
-
-        <section class="glass-panel p-8 space-y-6">
-            <h3 class="text-2xl font-bold heading-underline flex items-center gap-3 text-slate-900">
-                ตารางคิวงาน
-            </h3>
-            <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="block w-full py-4 bg-sky-100 border border-sky-200 rounded-2xl text-center font-bold text-sky-700 hover:bg-sky-400 hover:text-white transition-all shadow-md">
-                ดูคิวงานแบบ Real-time ✨
-            </a>
-            <div id="queue-details" contenteditable="false" class="p-4 bg-white/50 rounded-xl border border-white text-sm text-slate-600 italic">
-                (กำลังโหลดข้อมูล...)
-            </div>
-        </section>
-
-        <section class="glass-panel p-8 space-y-8">
-            <h3 class="text-2xl font-bold heading-underline text-slate-900">เครื่องคำนวณยอดเงิน</h3>
-            <div class="grid grid-cols-1 gap-6">
-                <div class="space-y-2">
-                    <label class="text-xs uppercase tracking-widest text-sky-600 font-bold ml-1">ประเภทบริการ</label>
-                    <select id="calc-type" class="w-full bg-white/80 border border-white rounded-2xl p-4 outline-none focus:border-sky-400 transition-all text-slate-900" onchange="calculatePrice()">
-                        <option value="sell">ฝากขายไอดี (TABAY RATE)</option>
-                        <option value="find">หาไอดีให้ (TA RAY RATE)</option>
-                    </select>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-xs uppercase tracking-widest text-sky-600 font-bold ml-1">จำนวนเงิน</label>
-                    <input type="number" id="calc-input" class="w-full bg-white/80 border border-white rounded-2xl p-4 text-xl font-bold outline-none focus:border-sky-400 text-slate-900" placeholder="0" oninput="calculatePrice()">
-                </div>
-                <div class="bg-sky-100 rounded-3xl p-6 border border-sky-200 space-y-4">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-slate-600">ค่าธรรมเนียม:</span>
-                        <span id="fee-result" class="font-bold text-sky-700">0 ฿</span>
+            <header class="text-center space-y-6 mb-4 relative flex flex-col items-center">
+                <div class="relative w-36 h-36 md:w-44 md:h-44 mb-2 group z-20">
+                    <div class="absolute inset-0 bg-sky-200/30 rounded-full blur-2xl"></div>
+                    <div class="absolute inset-0 border border-sky-300 rounded-full animate-spin-slow" style="border-top-color: transparent;"></div>
+                    <div class="absolute inset-[-6px] border border-sky-100 rounded-full animate-spin-slow" style="border-bottom-color: transparent; animation-direction: reverse;"></div>
+                    
+                    <img id="shop-profile-img" src="https://via.placeholder.com/150" class="w-full h-full object-cover rounded-full border-2 border-white shadow-xl relative z-10">
+                    
+                    <div class="admin-only absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center text-white text-[10px] z-20 cursor-pointer" onclick="document.getElementById('profile-upload').click()">
+                        เปลี่ยนรูป
                     </div>
-                    <div class="flex justify-between items-center border-t border-white pt-4">
-                        <span class="font-bold text-slate-900">ยอดสุทธิที่ได้รับ:</span>
-                        <span id="total-result" class="text-4xl font-bold text-slate-900 drop-shadow-md">0 ฿</span>
+                    <input type="file" id="profile-upload" class="hidden" accept="image/*" onchange="uploadProfileImg(this)">
+                </div>
+
+                <div class="relative">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full scale-[1.3] h-px bg-gradient-to-r from-transparent via-sky-300/40 to-transparent -z-10"></div>
+                    <h1 class="eng-heading text-6xl md:text-7xl font-bold text-gradient tracking-tighter py-1">Ta Ray</h1>
+                </div>
+
+                <p class="eng-heading text-xl text-sky-400 italic tracking-widest uppercase flex justify-center items-center gap-3 opacity-90">
+                    <span class="w-8 h-px bg-sky-200"></span> Welcome <span class="w-8 h-px bg-sky-200"></span>
+                </p>
+                
+                <div class="inline-flex items-center justify-center gap-3 glass-card px-8 py-3.5 rounded-full border border-sky-200 shadow-lg relative group z-10">
+                    <h2 class="text-xl md:text-2xl font-medium text-slate-700 tracking-wide">Cosmic Digital Service</h2>
+                </div>
+                
+                <div class="text-slate-500 text-[15px] max-w-lg mx-auto leading-relaxed glass-card p-6 rounded-3xl relative">
+                    <div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sky-300 rounded-tl-xl"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-sky-300 rounded-br-xl"></div>
+                    <p id="shop-desc" contenteditable="false">รับทำป้ายฝากขาย ป้ายเรทต่างๆ ป้ายคิวอาร์ ปกเครดิต ป้ายไอดียังไม่รับทำ และรับหาไอดีตามความต้องการของคุณ</p>
+                </div>
+            </header>
+
+            <section id="queue" class="glass-card p-8 space-y-6">
+                <h3 class="eng-heading text-3xl text-slate-800 flex items-center gap-4 relative">
+                    <span class="w-1.5 h-8 bg-sky-400 rounded-full"></span> คิวงาน & ฝากขาย
+                </h3>
+                <a href="https://docs.google.com/spreadsheets/d/1-kKlNjdrTLPbQ0ogYQt7Fb-QtCoLyMmX0H57NfEOMwA/edit?usp=drivesdk" target="_blank" class="flex items-center justify-center gap-3 w-full bg-sky-500 text-white py-5 rounded-2xl font-bold shadow-lg shadow-sky-100 transition-all hover:scale-[1.01] active:scale-95 text-lg">
+                    ตรวจสอบคิวงานแบบ Real-time ✨
+                </a>
+                <div id="queue-details" contenteditable="false" class="bg-sky-50/50 p-6 rounded-2xl border border-sky-100 text-slate-500 text-[15px] leading-relaxed italic text-center">
+                    (กำลังโหลดข้อมูล...)
+                </div>
+            </section>
+
+            <section id="calculator" class="glass-card p-8 space-y-8 relative overflow-hidden group">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-sky-100 rounded-full blur-3xl opacity-50"></div>
+                <h3 class="eng-heading text-3xl text-slate-800 flex items-center gap-4">
+                    <span class="w-1.5 h-8 bg-sky-400 rounded-full"></span> Calculator
+                </h3>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[11px] uppercase tracking-widest text-sky-500 font-bold ml-1">Service Type</label>
+                        <select id="calc-type" class="w-full bg-white/50 border border-sky-100 rounded-2xl p-4 text-slate-700 outline-none focus:border-sky-400 transition-all shadow-inner" onchange="calculatePrice()">
+                            <option value="sell">ฝากขายไอดี (TABAY RATE)</option>
+                            <option value="find">หาไอดีให้ (TA RAY RATE)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[11px] uppercase tracking-widest text-sky-500 font-bold ml-1">Amount (฿)</label>
+                        <input type="number" id="calc-input" class="w-full bg-white/50 border border-sky-100 rounded-2xl p-4 text-2xl font-bold text-slate-800 outline-none focus:border-sky-400 shadow-inner" placeholder="0" oninput="calculatePrice()">
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-sky-50 to-white rounded-3xl p-7 border border-sky-100 space-y-5">
+                        <div class="flex justify-between items-center text-sm text-slate-500">
+                            <span>ค่าบริการ/ธรรมเนียม:</span>
+                            <span id="fee-result" class="text-xl font-bold text-sky-600">0 ฿</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-sky-100 pt-5">
+                            <span class="font-bold text-slate-800 text-lg">ยอดสุทธิคงเหลือ:</span>
+                            <span id="total-result" class="text-4xl font-bold text-slate-900">0 ฿</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="space-y-6">
-            <h3 class="text-2xl font-bold heading-underline text-slate-900">อัลบั้มเรทราคา</h3>
-            <div id="gallery-rates" class="grid grid-cols-1 gap-8">
+            <section id="rates" class="space-y-8">
+                <div class="text-center">
+                    <h3 class="eng-heading text-4xl text-slate-800 mb-2">Price Rates</h3>
+                    <div class="w-16 h-1 bg-sky-400 mx-auto rounded-full"></div>
                 </div>
-            <button class="w-full p-5 border-2 border-dashed border-sky-300 rounded-3xl text-sky-700 text-sm font-bold admin-only hidden" onclick="document.getElementById('gallery-upload').click()">
-                + เพิ่มรูปเรทราคา
-            </button>
-            <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
-        </section>
+                <div id="gallery-rates" class="grid grid-cols-1 gap-8">
+                    </div>
+                <button class="admin-only hidden w-full p-6 border-2 border-dashed border-sky-300 rounded-3xl text-sky-500 font-bold bg-white/50" onclick="document.getElementById('gallery-upload').click()">
+                    + เพิ่มรูปภาพเรทราคาใหม่
+                </button>
+                <input type="file" id="gallery-upload" class="hidden" accept="image/*" onchange="uploadGalleryImg(this)">
+            </section>
 
-        <footer class="grid grid-cols-2 gap-4 pb-20">
-            <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="p-4 glass-panel text-center font-bold hover:bg-sky-100 transition-all border-none text-slate-800">Facebook</a>
-            <a href="#" class="p-4 glass-panel text-center font-bold hover:bg-sky-100 transition-all border-none text-slate-800">Line</a>
-            <button onclick="unlockAdmin()" class="col-span-2 text-[10px] opacity-20 hover:opacity-100 text-slate-900">Admin Login</button>
-        </footer>
+            <footer class="text-center space-y-6 pb-20 pt-10 border-t border-sky-100">
+                <div class="flex justify-center gap-4">
+                    <a href="https://www.facebook.com/share/1EZsmNZvLi/?mibextid=wwXIfr" target="_blank" class="px-10 py-3.5 bg-white border border-sky-100 rounded-full text-sm font-medium text-slate-600 shadow-sm hover:shadow-md transition-all">Facebook</a>
+                    <a href="#" class="px-10 py-3.5 bg-white border border-sky-100 rounded-full text-sm font-medium text-slate-600 shadow-sm hover:shadow-md transition-all">Line Messenger</a>
+                </div>
+                <p class="text-[11px] text-slate-400 tracking-widest uppercase">© 2026 TA RAY COSMIC STORE. All rights reserved.</p>
+                <button onclick="unlockAdmin()" class="text-[10px] text-sky-200 opacity-30 hover:opacity-100 transition-opacity">ADMIN PANEL</button>
+            </footer>
 
-    </main>
+        </main>
+    </div>
 
-    <div id="admin-actions" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-xs z-[1000] hidden">
-        <button class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-2xl" onclick="exitEditMode()">
-            บันทึกข้อมูลและปิด ✅
+    <div id="admin-actions" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[1001] hidden">
+        <button class="w-full bg-slate-800 text-white font-bold py-5 rounded-2xl shadow-2xl transition-all active:scale-95" onclick="exitEditMode()">
+            บันทึกข้อมูลและปิดระบบ ✅
         </button>
     </div>
 
@@ -219,38 +218,39 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Load Settings
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+
+        // Data Sync
         db.ref('settings').on('value', snap => {
-            const data = snap.val();
-            if(data) {
-                if(data.profileImg) document.getElementById('shop-profile-img').src = data.profileImg;
-                if(data.description) document.getElementById('shop-desc').innerText = data.description;
-                if(data.queueDetails) document.getElementById('queue-details').innerHTML = data.queueDetails;
+            const d = snap.val();
+            if(d) {
+                if(d.profileImg) document.getElementById('shop-profile-img').src = d.profileImg;
+                if(d.description) document.getElementById('shop-desc').innerText = d.description;
+                if(d.queueDetails) document.getElementById('queue-details').innerHTML = d.queueDetails;
             }
         });
 
-        // Load Gallery
         db.ref('galleries/rates').on('value', snap => {
             const cont = document.getElementById('gallery-rates');
             cont.innerHTML = '';
             snap.forEach(child => {
                 cont.innerHTML += `
-                    <div class="relative glass-panel p-4 overflow-hidden group">
-                        <button class="delete-btn" onclick="deleteItem('${child.key}')">ลบรูป</button>
-                        <img src="${child.val().imgUrl}" class="w-full h-auto rounded-2xl shadow-lg group-hover:scale-[1.02] transition-transform">
+                    <div class="relative glass-card p-4 group">
+                        <button class="delete-btn admin-only" onclick="deleteItem('${child.key}')">ลบรูป</button>
+                        <img src="${child.val().imgUrl}" class="w-full h-auto rounded-3xl shadow-sm transition-transform duration-500 group-hover:scale-[1.01]" onclick="window.open(this.src)">
                     </div>`;
             });
         });
 
-        // Admin Functions
+        // Admin Auth
         function unlockAdmin() {
-            let pw = prompt("รหัสแอดมิน:");
+            let pw = prompt("ADMIN PASSCODE:");
             if (pw !== null && btoa(pw) === "VGFiYXkxMjEy") {
                 document.body.classList.add("admin-mode-active");
                 document.getElementById('shop-desc').contentEditable = "true";
                 document.getElementById('queue-details').contentEditable = "true";
                 document.getElementById('admin-actions').classList.remove('hidden');
-                alert("โหมดแอดมินเปิดแล้ว!");
+                alert("โหมดแก้ไขเปิดทำงาน!");
             }
         }
 
@@ -263,7 +263,7 @@
             document.getElementById('admin-actions').classList.add('hidden');
             document.getElementById('shop-desc').contentEditable = "false";
             document.getElementById('queue-details').contentEditable = "false";
-            alert("บันทึกสำเร็จ!");
+            alert("บันทึกข้อมูลแล้ว!");
         }
 
         function uploadProfileImg(input) {
@@ -273,7 +273,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
         function uploadGalleryImg(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -281,10 +280,9 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
         function deleteItem(key) { if(confirm("ลบรูปนี้?")) db.ref('galleries/rates/'+key).remove(); }
 
-        // Calculator Logic
+        // Calculator Logic (Ta Ray Original)
         function calculatePrice() {
             const type = document.getElementById('calc-type').value;
             const input = parseFloat(document.getElementById('calc-input').value) || 0;
