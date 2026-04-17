@@ -31,7 +31,7 @@
         .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.15); }
         .text-gradient { background: linear-gradient(to right, #38bdf8, #818cf8, #38bdf8); -webkit-background-clip: text; color: transparent; background-size: 200% auto; animation: gradMove 5s linear infinite; }
         @keyframes gradMove { to { background-position: 200% center; } }
-        .editable-img { cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
+        .editable-img { cursor: pointer; transition: 0.3s; border: 2px solid transparent; background-color: rgba(15,23,42,0.8); }
         .admin-active .editable-img { border-color: #38bdf8; animation: pulseGlow 2s infinite; }
         input[type="number"]::-webkit-inner-spin-button { display: none; }
     </style>
@@ -43,7 +43,7 @@
         <header class="text-center space-y-4">
             <div class="relative w-32 h-32 mx-auto group">
                 <div class="absolute inset-0 bg-accent-primary/20 rounded-full blur-xl group-hover:bg-accent-primary/40 transition-all duration-700"></div>
-                <img id="logo-img" src="https://i.postimg.cc/HLBk00nV/mi-m-ch-x-8-20260408220728.png" class="editable-img w-full h-full object-cover rounded-full border-2 border-accent-primary/40 shadow-glow-primary relative z-10">
+                <img id="logo-img" src="https://placehold.co/400x400/0f172a/38bdf8?text=LOGO" class="editable-img w-full h-full object-cover rounded-full border-2 border-accent-primary/40 shadow-glow-primary relative z-10">
             </div>
             <h1 class="text-5xl font-bold text-gradient tracking-tight">TA RAY STORE</h1>
             <div class="bg-dark-card/80 backdrop-blur px-6 py-3 rounded-full border border-accent-primary/30 inline-block shadow-lg">
@@ -99,8 +99,8 @@
                 <div class="pt-6 border-t border-white/5">
                     <p class="text-xs text-center text-white/30 mb-4 uppercase tracking-widest">ตารางเรทราคาอ้างอิง (แอดมินคลิกเพื่อเปลี่ยน)</p>
                     <div class="grid grid-cols-1 gap-4">
-                        <img id="rate-sell-img" src="https://via.placeholder.com/800x450/0f172a/38bdf8?text=Rate+Sell+Image" class="editable-img w-full rounded-2xl border border-white/10 shadow-lg">
-                        <img id="rate-find-img" src="https://via.placeholder.com/800x450/0f172a/818cf8?text=Rate+Find+Image" class="editable-img w-full rounded-2xl border border-white/10 shadow-lg">
+                        <img id="rate-sell-img" src="https://placehold.co/800x450/0f172a/38bdf8?text=Rate+Sell" class="editable-img w-full rounded-2xl border border-white/10 shadow-lg">
+                        <img id="rate-find-img" src="https://placehold.co/800x450/0f172a/818cf8?text=Rate+Find" class="editable-img w-full rounded-2xl border border-white/10 shadow-lg">
                     </div>
                 </div>
             </div>
@@ -158,7 +158,7 @@
         let currentImgId = "";
         let calcType = "sell";
 
-        // Real-time Update Images
+        // ดึงรูปล่าสุดจากฐานข้อมูล
         const imgList = ["logo-img", "rate-sell-img", "rate-find-img"];
         imgList.forEach(id => {
             onValue(ref(db, "siteImages/" + id), (snap) => {
@@ -166,18 +166,18 @@
             });
         });
 
-        // Admin Auth
+        // ล็อกอิน
         window.adminLogin = () => {
             const pass = prompt("Enter Admin Password:");
             if(pass === "taray12121") {
                 isAdmin = true;
                 document.body.classList.add("admin-active");
                 document.getElementById("logoutBtn").classList.remove("hidden");
-                alert("โหมดแอดมินทำงาน! คลิกที่รูปเพื่อเปลี่ยนรูปภาพ");
+                alert("เข้าสู่ระบบแอดมินแล้ว! คลิกที่กรอบรูปเพื่อเปลี่ยนรูปภาพได้เลยครับ");
             } else { alert("รหัสผ่านไม่ถูกต้อง!"); }
         };
 
-        // Handle Image Click
+        // คลิกเลือกรูป
         document.querySelectorAll(".editable-img").forEach(img => {
             img.addEventListener("click", () => {
                 if(!isAdmin) return;
@@ -186,24 +186,36 @@
             });
         });
 
-        // Upload to Firebase
+        // กระบวนการอัปโหลด + บังคับเปลี่ยนรูปทันที!
         document.getElementById("imgInput").addEventListener("change", async (e) => {
             const file = e.target.files[0];
-            if(!file || !isAdmin) return;
+            if(!file || !isAdmin || !currentImgId) return;
 
             const target = document.getElementById(currentImgId);
             target.style.opacity = "0.3";
 
             try {
+                // 1. อัปโหลดขึ้น Storage
                 const storagePath = sRef(storage, "uploads/" + currentImgId + "_" + Date.now());
                 await uploadBytes(storagePath, file);
+                
+                // 2. เอาลิงก์ออกมา
                 const url = await getDownloadURL(storagePath);
+                
+                // 3. บังคับเปลี่ยนรูปบนหน้าเว็บทันที! (ไม่ต้องรอโหลดใหม่)
+                target.src = url;
+
+                // 4. บันทึกลิงก์ลงฐานข้อมูล (ให้คนอื่นเห็นด้วย)
                 await set(ref(db, "siteImages/" + currentImgId), url);
-                alert("เปลี่ยนรูปภาพเรียบร้อย!");
+                
+                alert("เปลี่ยนรูปภาพเรียบร้อยแล้วครับ! 🎉");
             } catch (err) {
                 console.error(err);
-                alert("เกิดข้อผิดพลาด: โปรดตรวจสอบว่าตั้งค่า Rules ใน Firebase เป็น true ทั้งคู่แล้ว");
-            } finally { target.style.opacity = "1"; }
+                alert("เกิดข้อผิดพลาดในการอัปโหลด: " + err.message);
+            } finally { 
+                target.style.opacity = "1"; 
+                e.target.value = ""; // รีเซ็ตเผื่อเลือกลบกวนรูปเดิม
+            }
         });
 
         // Calculator Logic
